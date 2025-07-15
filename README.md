@@ -35,29 +35,65 @@ export ANTHROPIC_API_KEY="your-api-key-here"
 
 ## Usage
 
+### Generate Commit Messages
+
 Generate commit message for staged changes:
 ```bash
 gitme
+gitme generate  # explicit subcommand
 ```
 
 Generate commit message for all changes:
 ```bash
 gitme --all
+gitme -a
 ```
 
 Output changes as JSON:
 ```bash
 gitme --json
+gitme -j
 ```
 
 Create commit directly:
 ```bash
 gitme --commit
+gitme -c
 ```
 
 Use a different Claude model:
 ```bash
 gitme --model claude-3-opus-20240229
+gitme -m claude-3-sonnet-20240229
+```
+
+### View Message History
+
+Show previously generated commit messages:
+```bash
+gitme show
+```
+
+Show last 5 messages:
+```bash
+gitme show --limit 5
+gitme show -n 5
+```
+
+Show messages from all repositories:
+```bash
+gitme show --all-repos
+gitme show -r
+```
+
+Clear message history for current repository:
+```bash
+gitme show --clear
+```
+
+Clear all message history:
+```bash
+gitme show --clear --all-repos
 ```
 
 ## Options
