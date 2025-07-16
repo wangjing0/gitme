@@ -1,10 +1,10 @@
 Metadata-Version: 2.4
 Name: gitme
 Version: 0.1.0
-Summary: AI-powered git commit message generator using Claude
+Summary: AI-powered git commit message generator
 Home-page: https://github.com/yourusername/gitme
 Author: Your Name
-Author-email: Your Name <your.email@example.com>
+Author-email: Your Name <jingwang.physics@gmail.com>
 License: MIT
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown

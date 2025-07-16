@@ -6,12 +6,12 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name="gitme",
     version="0.1.0",
-    author="Your Name",
-    author_email="your.email@example.com",
-    description="AI-powered git commit message generator using Claude",
+    author="Jing Wang",
+    author_email="jingwang.physics@gmail.com",
+    description="AI-powered git commit message generator",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/gitme",
+    url="https://github.com/wangjing0/gitme",
     package_dir={"": "src"},
     packages=find_packages(where="src"),
     classifiers=[
@@ -24,6 +24,8 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
     ],
     python_requires=">=3.8",
     install_requires=[

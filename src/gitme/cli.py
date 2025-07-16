@@ -21,7 +21,7 @@ def cli():
 @click.option('--all', '-a', is_flag=True, help='Analyze all changes including unstaged')
 @click.option('--json', '-j', is_flag=True, help='Output file changes as JSON')
 @click.option('--api-key', '-k', help='Anthropic API key (or set ANTHROPIC_API_KEY env var)')
-@click.option('--model', '-m', default='claude-3-haiku-20240307', help='Claude model to use')
+@click.option('--model', '-m', default='claude-3-7-sonnet-20250219', help='Claude model to use')
 @click.option('--commit', '-c', is_flag=True, help='Create commit with generated message')
 def generate(staged_only: bool, all: bool, json: bool, api_key: Optional[str], model: str, commit: bool):
     """Generate a commit message for current changes"""
@@ -49,8 +49,7 @@ def generate(staged_only: bool, all: bool, json: bool, api_key: Optional[str], m
         # Generate commit message
         try:
             generator = CommitMessageGenerator(api_key=api_key)
-            if model != 'claude-3-haiku-20240307':
-                generator.model = model
+            generator.model = model
             
             commit_message = generator.generate_commit_message(file_changes)
             
