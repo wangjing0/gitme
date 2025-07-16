@@ -57,12 +57,12 @@ def generate(staged: bool, all: bool, model: str, commit: bool):
     analyzer = GitDiffAnalyzer()
     
     if not analyzer.git_available:
-        click.echo(click.style("❌ Error: Git is not available or not in a git repository", fg="red", bold=True), err=True)
+        click.echo(click.style("𐩃 Error: Git is not available or not in a git repository", fg="red", bold=True), err=True)
         return
     
     # Determine which changes to analyze
     if staged and all:
-        click.echo(click.style("❌ Error: Cannot use both --staged and --all options together", fg="red", bold=True), err=True)
+        click.echo(click.style("𐩃 Error: Cannot use both --staged and --all options together", fg="red", bold=True), err=True)
         return
     
     # Default behavior: staged changes only
@@ -106,13 +106,13 @@ def generate(staged: bool, all: bool, model: str, commit: bool):
                     subprocess.run(["git", "commit", "-a", "-m", commit_message], check=True)
                     click.echo(click.style("✓ Commit created successfully!", fg="green", bold=True))
                 except subprocess.CalledProcessError as e:
-                    click.echo(click.style(f"❌ Failed to create commit: {e}", fg="red"), err=True)
+                    click.echo(click.style(f"𐩃 Failed to create commit: {e}", fg="red"), err=True)
     
     except ValueError as e:
-        click.echo(click.style(f"❌ Error: {e}", fg="red", bold=True), err=True)
+        click.echo(click.style(f"𐩃 Error: {e}", fg="red", bold=True), err=True)
         click.echo(click.style("💡 Please set ANTHROPIC_API_KEY environment variable", fg="yellow"), err=True)
     except Exception as e:
-        click.echo(click.style(f"❌ Error: {e}", fg="red", bold=True), err=True)
+        click.echo(click.style(f"𐩃 Error: {e}", fg="red", bold=True), err=True)
 
 
 @cli.command()
