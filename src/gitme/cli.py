@@ -17,15 +17,24 @@ def cli(ctx):
     
     Generate intelligent git commit messages by analyzing your code changes.
     
-    Examples:
+    Commands:
+        gitme [OPTIONS]         Generate commit message
+        gitme show [OPTIONS]    Show previous commit messages
+    
+    Generate Examples:
         gitme              # Generate message for staged changes
         gitme -a           # Generate message for all changes  
-        gitme -c           # Generate and commit all changes, will ask for confirmation before committing
-        gitme show         # Show previous commit messages
+        gitme -c           # Generate and commit all changes
+        gitme -m MODEL     # Use specific Claude model
+    
+    Show Examples:
+        gitme show         # Show last 10 messages
         gitme show -n 5    # Show last 5 messages
+        gitme show -r      # Show from all repositories
+        gitme show --clear # Clear message history
     
     Environment:
-        Set ANTHROPIC_API_KEY environment variable for Claude API access
+        ANTHROPIC_API_KEY must be set for Claude API access
     """
     if ctx.invoked_subcommand is None:
         # If no subcommand, show help
@@ -39,17 +48,21 @@ def cli(ctx):
 @click.option('--model', '-m', default='claude-3-7-sonnet-20250219', help='Claude model to use')
 @click.option('--commit', '-c', is_flag=True, help='Create commit with generated message')
 def generate(staged: bool, all: bool, model: str, commit: bool):
-    """Generate a commit message for current changes"""
+    """Generate a commit message for current changes
+    
+    By default analyzes staged changes only. Use -a for all changes.
+    Use -c to automatically commit after generating the message.
+    """
     
     analyzer = GitDiffAnalyzer()
     
     if not analyzer.git_available:
-        click.echo("Error: Git is not available or not in a git repository", err=True)
+        click.echo(click.style("Error: Git is not available or not in a git repository", fg="red", bold=True), err=True)
         return
     
     # Determine which changes to analyze
     if staged and all:
-        click.echo("Error: Cannot use both --staged and --all options together", err=True)
+        click.echo(click.style("Error: Cannot use both --staged and --all options together", fg="red", bold=True), err=True)
         return
     
     # Default behavior: staged changes only
@@ -66,7 +79,7 @@ def generate(staged: bool, all: bool, model: str, commit: bool):
     file_changes = analyzer.get_file_changes(staged_only=use_staged)
     
     if not file_changes:
-        click.echo("No changes detected to analyze")
+        click.echo(click.style("No changes detected to analyze", fg="yellow"))
         return
     
     # Generate commit message
@@ -81,8 +94,9 @@ def generate(staged: bool, all: bool, model: str, commit: bool):
         repo_path = os.getcwd()
         storage.save_message(commit_message, repo_path, file_changes)
         
-        click.echo(f"\nGenerated commit message:")
-        click.echo(f"  {commit_message}\n")
+        click.echo()
+        click.echo(click.style("Generated commit message:", fg="green", bold=True))
+        click.echo(click.style(commit_message, fg="cyan"))
         
         if commit:
             # Ask for confirmation before committing
@@ -90,7 +104,7 @@ def generate(staged: bool, all: bool, model: str, commit: bool):
                 import subprocess
                 try:
                     subprocess.run(["git", "commit", "-a", "-m", commit_message], check=True)
-                    click.echo("Commit created successfully!")
+                    click.echo(click.style("✓ Commit created successfully!", fg="green", bold=True))
                 except subprocess.CalledProcessError as e:
                     click.echo(f"Failed to create commit: {e}", err=True)
     
@@ -106,36 +120,44 @@ def generate(staged: bool, all: bool, model: str, commit: bool):
 @click.option('--all-repos', '-r', is_flag=True, help='Show messages from all repositories')
 @click.option('--clear', is_flag=True, help='Clear message history')
 def show(limit: int, all_repos: bool, clear: bool):
-    """Show previously generated commit messages"""
+    """Show previously generated commit messages
+    
+    Displays message history for the current repository by default.
+    Use -r to show messages from all repositories.
+    Use --clear to remove message history.
+    """
     storage = MessageStorage()
     repo_path = os.getcwd() if not all_repos else None
     
     if clear:
         if click.confirm(f"Are you sure you want to clear {'all' if all_repos else 'this repository'} message history?"):
             storage.clear_messages(repo_path)
-            click.echo("Message history cleared.")
+            click.echo(click.style("✓ Message history cleared.", fg="green"))
         return
     
     messages = storage.get_messages(repo_path, limit)
     
     if not messages:
-        click.echo("No previously generated messages found.")
+        click.echo(click.style("No previously generated messages found.", fg="yellow"))
         return
     
     for i, entry in enumerate(reversed(messages), 1):
         timestamp = datetime.fromisoformat(entry['timestamp'])
         formatted_time = timestamp.strftime("%Y-%m-%d %H:%M:%S")
         
-        click.echo(f"\n{click.style(f'[{i}]', fg='cyan')} {click.style(formatted_time, fg='green')}")
+        click.echo(f"\n{click.style(f'[{i}]', fg='cyan', bold=True)} {click.style(formatted_time, fg='green')}")
         if all_repos:
-            click.echo(f"    Repository: {entry['repo_path']}")
-        click.echo(f"    Message: {entry['message']}")
+            click.echo(f"    {click.style('Repository:', fg='magenta')} {entry['repo_path']}")
+        click.echo(f"    {click.style('Message:', fg='blue', bold=True)}")
+        # Display multi-line messages with proper indentation
+        for line in entry['message'].split('\n'):
+            click.echo(f"    {line}")
         
         # Show file changes summary
         file_changes = entry.get('file_changes', {})
         if file_changes:
             files_count = len(file_changes)
-            click.echo(f"    Files changed: {files_count}")
+            click.echo(f"    {click.style('Files changed:', fg='yellow')} {files_count}")
 
 
 def main():

@@ -22,7 +22,7 @@ class CommitMessageGenerator:
         try:
             response = self.client.messages.create(
                 model=self.model,
-                max_tokens=300,
+                max_tokens=500,
                 temperature=0.3,
                 messages=[
                     {
@@ -40,19 +40,29 @@ class CommitMessageGenerator:
     
     def _create_prompt(self, file_changes: Dict[str, str]) -> str:
         changes_summary = []
+        filenames = list(file_changes.keys())
+        
         for filename, diff in file_changes.items():
             changes_summary.append(f"File: {filename}\nChanges:\n{diff[:1000]}...")  # Truncate long diffs
         
         prompt = f"""Analyze the following git diff and generate a concise, informative commit message.
 The commit message should:
-1. Start with a verb in present tense (e.g., Add, Update, Fix, Remove)
-2. Be under 72 characters
-3. Clearly describe what changed and why (if apparent)
-4. Follow conventional commit format if applicable
+1. Have a summary line that starts with a verb in present tense (e.g., Add, Update, Fix, Remove)
+2. The summary line should be under 50 characters
+3. Include a blank line after the summary
+4. List the changed files with bullet points
+5. Keep the total message concise and informative
+
+Example format:
+Update user authentication logic
+
+- Modified auth.py
+- Updated config.json
+- Fixed login.html
 
 Git diff:
 {chr(10).join(changes_summary)}
 
-Generate only the commit message, nothing else:"""
+Generate only the commit message following the format above:"""
         
         return prompt

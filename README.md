@@ -69,10 +69,18 @@ gitme show --clear
 
 ## Options
 
+### Generate Options
+
 - `-s, --staged`: Analyze only staged changes
 - `-a, --all`: Analyze all changes (staged and unstaged)
 - `-m, --model`: Claude model to use
 - `-c, --commit`: Create commit with generated message (uses `git commit -a -m`)
+
+### Show Options
+
+- `-n, --limit`: Number of messages to show (default: 10)
+- `-r, --all-repos`: Show messages from all repositories
+- `--clear`: Clear message history
 
 ## Requirements
 
