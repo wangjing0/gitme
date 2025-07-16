@@ -8,7 +8,7 @@ git commit -a -m "ugh... what did I do? what do I even say here?"
 gitme -c
 ```
 ```bash
-gitme show
+gitme show -n
 ```
 ![gitme-cli](https://github.com/wangjing0/gitme/raw/main/commits.png)
 
@@ -92,11 +92,11 @@ gitme show --clear
 - `-s, --staged`: Analyze only staged changes
 - `-a, --all`: Analyze all changes (staged and unstaged)
 - `-m, --model`: Claude model to use
-- `-c, --commit`: Create commit with generated message (uses `git commit -a -m`)
+- `-c, --commit`: Create commit with generated message (uses `git commit -a -m "auto-generated message"`)
 
 ### Show Options
 
-- `-n, --limit`: Number of messages to show (default: 10)
+- `-n, --limit`: Number of messages to show
 - `-r, --all-repos`: Show messages from all repositories
 - `--clear`: Clear message history
 
