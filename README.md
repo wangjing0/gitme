@@ -1,8 +1,12 @@
-# Git commit message generator.
+# A git commit message generator.
 
-## `git commit -a -m "ugh... what did I do? what do I even say here?"` 
-## ➤ `gitme -c`
-
+```bash
+git commit -a -m "ugh... what did I do? what do I even say here?"
+```
+➤
+```bash
+gitme -c
+```
 
 ![gitme-cli](commits.png)
 
