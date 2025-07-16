@@ -36,10 +36,9 @@ def cli(ctx):
 @cli.command()
 @click.option('--staged', '-s', is_flag=True, help='Analyze only staged changes')
 @click.option('--all', '-a', is_flag=True, help='Analyze all changes (staged and unstaged)')
-@click.option('--json', '-j', is_flag=True, help='Output file changes as JSON')
 @click.option('--model', '-m', default='claude-3-7-sonnet-20250219', help='Claude model to use')
 @click.option('--commit', '-c', is_flag=True, help='Create commit with generated message')
-def generate(staged: bool, all: bool, json: bool, model: str, commit: bool):
+def generate(staged: bool, all: bool, model: str, commit: bool):
     """Generate a commit message for current changes"""
     
     analyzer = GitDiffAnalyzer()
@@ -70,40 +69,36 @@ def generate(staged: bool, all: bool, json: bool, model: str, commit: bool):
         click.echo("No changes detected to analyze")
         return
     
-    if json:
-        # Output JSON format of changes
-        click.echo(analyzer.format_changes_json(staged_only=use_staged))
-    else:
-        # Generate commit message
-        try:
-            generator = CommitMessageGenerator()
-            generator.model = model
-            
-            commit_message = generator.generate_commit_message(file_changes)
-            
-            # Save the generated message
-            storage = MessageStorage()
-            repo_path = os.getcwd()
-            storage.save_message(commit_message, repo_path, file_changes)
-            
-            click.echo(f"\nGenerated commit message:")
-            click.echo(f"  {commit_message}\n")
-            
-            if commit:
-                # Ask for confirmation before committing
-                if click.confirm("Do you want to create a commit with this message?"):
-                    import subprocess
-                    try:
-                        subprocess.run(["git", "commit", "-a", "-m", commit_message], check=True)
-                        click.echo("Commit created successfully!")
-                    except subprocess.CalledProcessError as e:
-                        click.echo(f"Failed to create commit: {e}", err=True)
+    # Generate commit message
+    try:
+        generator = CommitMessageGenerator()
+        generator.model = model
         
-        except ValueError as e:
-            click.echo(f"Error: {e}", err=True)
-            click.echo("Please set ANTHROPIC_API_KEY environment variable", err=True)
-        except Exception as e:
-            click.echo(f"Error: {e}", err=True)
+        commit_message = generator.generate_commit_message(file_changes)
+        
+        # Save the generated message
+        storage = MessageStorage()
+        repo_path = os.getcwd()
+        storage.save_message(commit_message, repo_path, file_changes)
+        
+        click.echo(f"\nGenerated commit message:")
+        click.echo(f"  {commit_message}\n")
+        
+        if commit:
+            # Ask for confirmation before committing
+            if click.confirm("Do you want to create a commit with this message?"):
+                import subprocess
+                try:
+                    subprocess.run(["git", "commit", "-a", "-m", commit_message], check=True)
+                    click.echo("Commit created successfully!")
+                except subprocess.CalledProcessError as e:
+                    click.echo(f"Failed to create commit: {e}", err=True)
+    
+    except ValueError as e:
+        click.echo(f"Error: {e}", err=True)
+        click.echo("Please set ANTHROPIC_API_KEY environment variable", err=True)
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
 
 
 @cli.command()
