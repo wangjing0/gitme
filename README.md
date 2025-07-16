@@ -1,4 +1,4 @@
-# GitMe
+# `git commit -a -m "ugh... what do I even say here?"` -> `gitme -c`
 
 Git commit message generator.
 
@@ -35,7 +35,7 @@ pip install -e .
 
 ## Setup
 
-Set your Anthropic API key:
+Set Anthropic API key if not already set in your environment:
 
 ```bash
 export ANTHROPIC_API_KEY="your-api-key-here"
