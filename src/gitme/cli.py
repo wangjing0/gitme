@@ -57,12 +57,12 @@ def generate(staged: bool, all: bool, model: str, commit: bool):
     analyzer = GitDiffAnalyzer()
     
     if not analyzer.git_available:
-        click.echo(click.style("Error: Git is not available or not in a git repository", fg="red", bold=True), err=True)
+        click.echo(click.style("❌ Error: Git is not available or not in a git repository", fg="red", bold=True), err=True)
         return
     
     # Determine which changes to analyze
     if staged and all:
-        click.echo(click.style("Error: Cannot use both --staged and --all options together", fg="red", bold=True), err=True)
+        click.echo(click.style("❌ Error: Cannot use both --staged and --all options together", fg="red", bold=True), err=True)
         return
     
     # Default behavior: staged changes only
@@ -79,7 +79,7 @@ def generate(staged: bool, all: bool, model: str, commit: bool):
     file_changes = analyzer.get_file_changes(staged_only=use_staged)
     
     if not file_changes:
-        click.echo(click.style("No changes detected to analyze", fg="yellow"))
+        click.echo(click.style("⚠️  No changes detected to analyze", fg="yellow"))
         return
     
     # Generate commit message
@@ -95,7 +95,7 @@ def generate(staged: bool, all: bool, model: str, commit: bool):
         storage.save_message(commit_message, repo_path, file_changes)
         
         click.echo()
-        click.echo(click.style("Generated commit message:", fg="green", bold=True))
+        click.echo(click.style("🎉 Generated commit message:", fg="green", bold=True))
         click.echo(click.style(commit_message, fg="cyan"))
         
         if commit:
@@ -106,13 +106,13 @@ def generate(staged: bool, all: bool, model: str, commit: bool):
                     subprocess.run(["git", "commit", "-a", "-m", commit_message], check=True)
                     click.echo(click.style("✓ Commit created successfully!", fg="green", bold=True))
                 except subprocess.CalledProcessError as e:
-                    click.echo(f"Failed to create commit: {e}", err=True)
+                    click.echo(click.style(f"❌ Failed to create commit: {e}", fg="red"), err=True)
     
     except ValueError as e:
-        click.echo(f"Error: {e}", err=True)
-        click.echo("Please set ANTHROPIC_API_KEY environment variable", err=True)
+        click.echo(click.style(f"❌ Error: {e}", fg="red", bold=True), err=True)
+        click.echo(click.style("💡 Please set ANTHROPIC_API_KEY environment variable", fg="yellow"), err=True)
     except Exception as e:
-        click.echo(f"Error: {e}", err=True)
+        click.echo(click.style(f"❌ Error: {e}", fg="red", bold=True), err=True)
 
 
 @cli.command()
@@ -132,13 +132,13 @@ def show(limit: int, all_repos: bool, clear: bool):
     if clear:
         if click.confirm(f"Are you sure you want to clear {'all' if all_repos else 'this repository'} message history?"):
             storage.clear_messages(repo_path)
-            click.echo(click.style("✓ Message history cleared.", fg="green"))
+            click.echo(click.style("🗑️  Message history cleared.", fg="green"))
         return
     
     messages = storage.get_messages(repo_path, limit)
     
     if not messages:
-        click.echo(click.style("No previously generated messages found.", fg="yellow"))
+        click.echo(click.style("📭 No previously generated messages found.", fg="yellow"))
         return
     
     for i, entry in enumerate(reversed(messages), 1):
@@ -147,8 +147,8 @@ def show(limit: int, all_repos: bool, clear: bool):
         
         click.echo(f"\n{click.style(f'[{i}]', fg='cyan', bold=True)} {click.style(formatted_time, fg='green')}")
         if all_repos:
-            click.echo(f"    {click.style('Repository:', fg='magenta')} {entry['repo_path']}")
-        click.echo(f"    {click.style('Message:', fg='blue', bold=True)}")
+            click.echo(f"    {click.style('📁 Repository:', fg='magenta')} {entry['repo_path']}")
+        click.echo(f"    {click.style('💬 Message:', fg='blue', bold=True)}")
         # Display multi-line messages with proper indentation
         for line in entry['message'].split('\n'):
             click.echo(f"    {line}")
@@ -157,7 +157,7 @@ def show(limit: int, all_repos: bool, clear: bool):
         file_changes = entry.get('file_changes', {})
         if file_changes:
             files_count = len(file_changes)
-            click.echo(f"    {click.style('Files changed:', fg='yellow')} {files_count}")
+            click.echo(f"    {click.style('📝 Files changed:', fg='yellow')} {files_count}")
 
 
 def main():
