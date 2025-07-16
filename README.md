@@ -4,14 +4,14 @@ AI-powered git commit message generator.
 
 ## Features
 
-- **AI-Powered Analysis**: Leverages Claude AI to analyze git diffs and generate contextually relevant commit messages
-- **Flexible Change Selection**: Support for staged changes only or all modified files
-- **Message History**: Track and review previously generated commit messages with the `show` command
-- **Multiple Output Formats**: Export changes as JSON for integration with other tools
-- **One-Click Commits**: Generate and commit with a single command using the `--commit` flag
-- **Model Flexibility**: Choose between different Claude models (Haiku, Sonnet, Opus) based on your needs
-- **Smart Storage**: Automatically saves generated messages for future reference
-- **Repository-Aware**: Maintains separate message histories for different git repositories
+- AI-Powered Analysis: Leverages Claude AI to analyze git diffs and generate contextually relevant commit messages
+- Flexible Change Selection: Support for staged changes only or all modified files
+- Message History: Track and review previously generated commit messages with the `show` command
+- Multiple Output Formats: Export changes as JSON for integration with other tools
+- One-Click Commits: Generate and commit with a single command using the `--commit` flag
+- Model Flexibility: Choose between different Claude models (Haiku, Sonnet, Opus) based on your needs
+- Smart Storage: Automatically saves generated messages for future reference
+- Repository-Aware: Maintains separate message histories for different git repositories
 
 ## Installation
 
