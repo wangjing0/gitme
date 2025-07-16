@@ -1,6 +1,6 @@
 # GitMe
 
-AI-powered git commit message generator using Claude.
+AI-powered git commit message generator.
 
 ## Features
 

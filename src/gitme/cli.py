@@ -116,24 +116,23 @@ def show(limit: int, all_repos: bool, clear: bool):
             click.echo(f"    Files changed: {files_count}")
 
 
-# Make the group the default command when no subcommand is provided
-@click.command()
-@click.option('--staged-only', '-s', is_flag=True, default=True, help='Analyze only staged changes (default: True)')
-@click.option('--all', '-a', is_flag=True, help='Analyze all changes including unstaged')
-@click.option('--json', '-j', is_flag=True, help='Output file changes as JSON')
-@click.option('--api-key', '-k', help='Anthropic API key (or set ANTHROPIC_API_KEY env var)')
-@click.option('--model', '-m', default='claude-3-haiku-20240307', help='Claude model to use')
-@click.option('--commit', '-c', is_flag=True, help='Create commit with generated message')
-@click.pass_context
-def main(ctx, staged_only: bool, all: bool, json: bool, api_key: Optional[str], model: str, commit: bool):
-    """GitMe - AI-powered git commit message generator using Claude"""
-    # If running without subcommand, call generate
-    ctx.invoke(generate, staged_only=staged_only, all=all, json=json, api_key=api_key, model=model, commit=commit)
 
 
-# Set up the CLI to work both ways
-cli.add_command(main, name='')  # Allow default behavior
+def main():
+    """Entry point that provides backward compatibility"""
+    import sys
+    
+    # If no arguments or help flag, show the group help
+    if len(sys.argv) == 1 or (len(sys.argv) == 2 and sys.argv[1] in ['--help', '-h']):
+        cli()
+    # If the first argument is a known subcommand, use the group
+    elif len(sys.argv) > 1 and sys.argv[1] in ['generate', 'show']:
+        cli()
+    # Otherwise, assume it's the old-style command and prepend 'generate'
+    else:
+        sys.argv.insert(1, 'generate')
+        cli()
 
 
 if __name__ == "__main__":
-    cli()
+    main()

@@ -28,7 +28,7 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "click>=8.0.0",
-        "anthropic>=0.18.0",
+        "anthropic>=0.57.1",
     ],
     entry_points={
         "console_scripts": [
