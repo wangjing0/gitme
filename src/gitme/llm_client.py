@@ -8,7 +8,7 @@ class CommitMessageGenerator:
     def __init__(self, api_key: Optional[str] = None):
         self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
         if not self.api_key:
-            raise ValueError("Anthropic API key is required. Set ANTHROPIC_API_KEY environment variable or pass it as parameter.")
+            raise ValueError("Anthropic API key is required. Set ANTHROPIC_API_KEY environment variable.")
         
         self.client = Anthropic(api_key=self.api_key)
         self.model = "claude-3-7-sonnet-20250219"  # Using Sonnet 3.7 for best balance

@@ -10,20 +10,36 @@ from .config import Config
 from .storage import MessageStorage
 
 
-@click.group()
-def cli():
-    """GitMe - AI-powered git commit message generator using Claude"""
-    pass
+@click.group(invoke_without_command=True)
+@click.pass_context
+def cli(ctx):
+    """GitMe - Git commit message generator
+    
+    Generate intelligent git commit messages by analyzing your code changes.
+    
+    Examples:
+        gitme              # Generate message for staged changes
+        gitme -a           # Generate message for all changes  
+        gitme -c           # Generate and commit all changes, will ask for confirmation before committing
+        gitme show         # Show previous commit messages
+        gitme show -n 5    # Show last 5 messages
+    
+    Environment:
+        Set ANTHROPIC_API_KEY environment variable for Claude API access
+    """
+    if ctx.invoked_subcommand is None:
+        # If no subcommand, show help
+        click.echo(ctx.get_help())
+        ctx.exit()
 
 
 @cli.command()
 @click.option('--staged', '-s', is_flag=True, help='Analyze only staged changes')
 @click.option('--all', '-a', is_flag=True, help='Analyze all changes (staged and unstaged)')
 @click.option('--json', '-j', is_flag=True, help='Output file changes as JSON')
-@click.option('--api-key', '-k', help='Anthropic API key (or set ANTHROPIC_API_KEY env var)')
 @click.option('--model', '-m', default='claude-3-7-sonnet-20250219', help='Claude model to use')
 @click.option('--commit', '-c', is_flag=True, help='Create commit with generated message')
-def generate(staged: bool, all: bool, json: bool, api_key: Optional[str], model: str, commit: bool):
+def generate(staged: bool, all: bool, json: bool, model: str, commit: bool):
     """Generate a commit message for current changes"""
     
     analyzer = GitDiffAnalyzer()
@@ -60,7 +76,7 @@ def generate(staged: bool, all: bool, json: bool, api_key: Optional[str], model:
     else:
         # Generate commit message
         try:
-            generator = CommitMessageGenerator(api_key=api_key)
+            generator = CommitMessageGenerator()
             generator.model = model
             
             commit_message = generator.generate_commit_message(file_changes)
@@ -85,7 +101,7 @@ def generate(staged: bool, all: bool, json: bool, api_key: Optional[str], model:
         
         except ValueError as e:
             click.echo(f"Error: {e}", err=True)
-            click.echo("Please set ANTHROPIC_API_KEY environment variable or use --api-key option", err=True)
+            click.echo("Please set ANTHROPIC_API_KEY environment variable", err=True)
         except Exception as e:
             click.echo(f"Error: {e}", err=True)
 
@@ -127,14 +143,17 @@ def show(limit: int, all_repos: bool, clear: bool):
             click.echo(f"    Files changed: {files_count}")
 
 
-
-
 def main():
     """Entry point that provides backward compatibility"""
     import sys
     
-    # If no arguments or help flag, show the group help
-    if len(sys.argv) == 1 or (len(sys.argv) == 2 and sys.argv[1] in ['--help', '-h']):
+    # If help flag, show the main help
+    if '--help' in sys.argv or '-h' in sys.argv:
+        # Remove the argument so Click handles it properly
+        cli()
+    # If no arguments, default to generate command 
+    elif len(sys.argv) == 1:
+        sys.argv.append('generate')
         cli()
     # If the first argument is a known subcommand, use the group
     elif len(sys.argv) > 1 and sys.argv[1] in ['generate', 'show']:

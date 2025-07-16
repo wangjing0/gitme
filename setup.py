@@ -8,7 +8,7 @@ setup(
     version="0.1.0",
     author="Jing Wang",
     author_email="jingwang.physics@gmail.com",
-    description="AI-powered git commit message generator",
+    description="Git commit message generator",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/wangjing0/gitme",

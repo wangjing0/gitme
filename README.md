@@ -1,10 +1,10 @@
 # GitMe
 
-AI-powered git commit message generator.
+git commit message generator.
 
 ## Features
 
-- AI-Powered Analysis: Leverages Claude AI to analyze git diffs and generate contextually relevant commit messages
+- Intelligent Analysis: Leverages Claude to analyze git diffs and generate contextually relevant commit messages
 - Flexible Change Selection: Support for staged changes only or all modified files
 - Message History: Track and review previously generated commit messages with the `show` command
 - Multiple Output Formats: Export changes as JSON for integration with other tools
@@ -105,7 +105,6 @@ gitme show --clear --all-repos
 - `-s, --staged`: Analyze only staged changes
 - `-a, --all`: Analyze all changes (staged and unstaged)
 - `-j, --json`: Output file changes as JSON
-- `-k, --api-key`: Anthropic API key
 - `-m, --model`: Claude model to use
 - `-c, --commit`: Create commit with generated message (uses `git commit -a -m`)
 
