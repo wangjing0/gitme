@@ -7,8 +7,10 @@ git commit -a -m "ugh... what did I do? what do I even say here?"
 ```bash
 gitme -c
 ```
-
-![gitme-cli](commits.png)
+```bash
+gitme show
+```
+![gitme-cli](https://github.com/wangjing0/gitme/raw/main/commits.png)
 
 ## Features
 
