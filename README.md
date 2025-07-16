@@ -1,4 +1,5 @@
-# `git commit -a -m "ugh... what do I even say here?"` -> `gitme -c`
+# `git commit -a -m "ugh... what did I do? what do I even say here?"` ➤
+# `gitme -c`
 
 Git commit message generator.
 
