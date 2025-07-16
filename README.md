@@ -7,9 +7,11 @@ git commit -a -m "ugh... what did I do? what do I even say here?"
 ```bash
 gitme -c
 ```
+
 ```bash
-gitme show -n
+gitme show -n 5
 ```
+
 ![gitme-cli](https://github.com/wangjing0/gitme/raw/main/commits.png)
 
 ## Features
