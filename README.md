@@ -39,15 +39,17 @@ export ANTHROPIC_API_KEY="your-api-key-here"
 
 ### Generate Commit Messages
 
-Generate commit message for staged changes:
+Generate commit message for staged changes only (default):
 ```bash
 gitme
-gitme generate  # explicit subcommand
+gitme generate
+gitme generate -s  # explicitly staged only
+gitme -s
 ```
 
-Generate commit message for all changes:
+Generate commit message for all changes (staged and unstaged):
 ```bash
-gitme --all
+gitme generate -a
 gitme -a
 ```
 
@@ -57,7 +59,7 @@ gitme --json
 gitme -j
 ```
 
-Create commit directly:
+Create commit directly (analyzes all changes and commits with `git commit -a -m`):
 ```bash
 gitme --commit
 gitme -c
@@ -100,12 +102,12 @@ gitme show --clear --all-repos
 
 ## Options
 
-- `-s, --staged-only`: Analyze only staged changes (default)
-- `-a, --all`: Analyze all changes including unstaged
+- `-s, --staged`: Analyze only staged changes
+- `-a, --all`: Analyze all changes (staged and unstaged)
 - `-j, --json`: Output file changes as JSON
 - `-k, --api-key`: Anthropic API key
 - `-m, --model`: Claude model to use
-- `-c, --commit`: Create commit with generated message
+- `-c, --commit`: Create commit with generated message (uses `git commit -a -m`)
 
 ## Requirements
 

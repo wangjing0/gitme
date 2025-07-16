@@ -17,13 +17,13 @@ def cli():
 
 
 @cli.command()
-@click.option('--staged-only', '-s', is_flag=True, default=True, help='Analyze only staged changes (default: True)')
-@click.option('--all', '-a', is_flag=True, help='Analyze all changes including unstaged')
+@click.option('--staged', '-s', is_flag=True, help='Analyze only staged changes')
+@click.option('--all', '-a', is_flag=True, help='Analyze all changes (staged and unstaged)')
 @click.option('--json', '-j', is_flag=True, help='Output file changes as JSON')
 @click.option('--api-key', '-k', help='Anthropic API key (or set ANTHROPIC_API_KEY env var)')
 @click.option('--model', '-m', default='claude-3-7-sonnet-20250219', help='Claude model to use')
 @click.option('--commit', '-c', is_flag=True, help='Create commit with generated message')
-def generate(staged_only: bool, all: bool, json: bool, api_key: Optional[str], model: str, commit: bool):
+def generate(staged: bool, all: bool, json: bool, api_key: Optional[str], model: str, commit: bool):
     """Generate a commit message for current changes"""
     
     analyzer = GitDiffAnalyzer()
@@ -33,7 +33,19 @@ def generate(staged_only: bool, all: bool, json: bool, api_key: Optional[str], m
         return
     
     # Determine which changes to analyze
-    use_staged = not all
+    if staged and all:
+        click.echo("Error: Cannot use both --staged and --all options together", err=True)
+        return
+    
+    # Default behavior: staged changes only
+    use_staged = True
+    
+    if all or commit:
+        # For --all or --commit, analyze all changes
+        use_staged = False
+    elif staged:
+        # Explicitly requested staged only
+        use_staged = True
     
     # Get file changes
     file_changes = analyzer.get_file_changes(staged_only=use_staged)
@@ -66,7 +78,7 @@ def generate(staged_only: bool, all: bool, json: bool, api_key: Optional[str], m
                 if click.confirm("Do you want to create a commit with this message?"):
                     import subprocess
                     try:
-                        subprocess.run(["git", "commit", "-m", commit_message], check=True)
+                        subprocess.run(["git", "commit", "-a", "-m", commit_message], check=True)
                         click.echo("Commit created successfully!")
                     except subprocess.CalledProcessError as e:
                         click.echo(f"Failed to create commit: {e}", err=True)
