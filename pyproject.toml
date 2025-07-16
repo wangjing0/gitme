@@ -3,9 +3,9 @@ requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "gitme"
+name = "gitme-cli"
 version = "0.1.0"
-description = "Git commit message generator using Claude"
+description = "Git commit message generator"
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}

@@ -13,8 +13,16 @@ Git commit message generator.
 
 ## Installation
 
+Install from PyPI:
+
 ```bash
-pip install gitme
+pip install gitme-cli
+```
+
+Or install directly from GitHub:
+
+```bash
+pip install git+https://github.com/wangjing0/gitme.git
 ```
 
 Or install from source:
