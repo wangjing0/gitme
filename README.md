@@ -3,7 +3,7 @@
 ```bash
 git commit -a -m "ugh... what did I do? what do I even say here?"
 ```
-➤
+# ↓
 ```bash
 gitme -c
 ```
@@ -54,7 +54,8 @@ Set Anthropic API key if not already set in your environment:
 export ANTHROPIC_API_KEY="your-api-key-here"
 ```
 
-## Usage
+
+**Note:** All `gitme` commands must be run from within a git repository directory. If you're not in a git repository, you'll see an error message prompting you to run `git init`.
 
 ### Basic Usage
 

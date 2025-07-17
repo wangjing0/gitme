@@ -57,7 +57,13 @@ def generate(staged: bool, all: bool, model: str, commit: bool):
     analyzer = GitDiffAnalyzer()
     
     if not analyzer.git_available:
-        click.echo(click.style("𐩃 Error: Git is not available or not in a git repository", fg="red", bold=True), err=True)
+        click.echo(click.style("𐩃 Error: Git is not installed on your system", fg="red", bold=True), err=True)
+        click.echo(click.style("💡 Please install git to use this tool", fg="yellow"), err=True)
+        return
+    
+    if not analyzer.in_git_repo:
+        click.echo(click.style("𐩃 Error: Not in a git repository", fg="red", bold=True), err=True)
+        click.echo(click.style("💡 Please run 'git init' to initialize a git repository", fg="yellow"), err=True)
         return
     
     # Determine which changes to analyze

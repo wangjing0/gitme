@@ -6,15 +6,27 @@ from gitme.git_diff import GitDiffAnalyzer
 
 
 class TestGitDiffAnalyzer:
-    def test_init(self):
-        with patch('gitme.git_diff.GitDiffAnalyzer._check_git', return_value=True):
-            analyzer = GitDiffAnalyzer()
-            assert analyzer.git_available is True
+    @patch('subprocess.run')
+    def test_init(self, mock_run):
+        mock_run.return_value = MagicMock()
+        analyzer = GitDiffAnalyzer()
+        assert analyzer.git_available is True
+        assert analyzer.in_git_repo is True
     
-    def test_init_git_not_available(self):
-        with patch('gitme.git_diff.GitDiffAnalyzer._check_git', return_value=False):
-            analyzer = GitDiffAnalyzer()
-            assert analyzer.git_available is False
+    @patch('subprocess.run')
+    def test_init_git_not_available(self, mock_run):
+        mock_run.side_effect = FileNotFoundError
+        analyzer = GitDiffAnalyzer()
+        assert analyzer.git_available is False
+        assert analyzer.in_git_repo is False
+    
+    @patch('subprocess.run')
+    def test_init_git_available_not_in_repo(self, mock_run):
+        # First call succeeds (git --version), second fails (git rev-parse)
+        mock_run.side_effect = [MagicMock(), subprocess.CalledProcessError(1, 'git')]
+        analyzer = GitDiffAnalyzer()
+        assert analyzer.git_available is True
+        assert analyzer.in_git_repo is False
     
     def test_check_git_available(self):
         analyzer = GitDiffAnalyzer()
@@ -35,6 +47,35 @@ class TestGitDiffAnalyzer:
         with patch('subprocess.run', side_effect=subprocess.CalledProcessError(1, 'git')):
             result = analyzer._check_git()
             assert result is False
+    
+    @patch('subprocess.run')
+    def test_check_git_repo_available(self, mock_run):
+        mock_run.return_value = MagicMock()
+        analyzer = GitDiffAnalyzer()
+        analyzer.git_available = True
+        result = analyzer._check_git_repo()
+        assert result is True
+        # Verify it was called with the right arguments
+        calls = [call.args for call in mock_run.call_args_list]
+        assert (["git", "rev-parse", "--git-dir"],) in calls
+    
+    @patch('subprocess.run')
+    def test_check_git_repo_not_available(self, mock_run):
+        # Initialize with successful git check
+        mock_run.return_value = MagicMock()
+        analyzer = GitDiffAnalyzer()
+        analyzer.git_available = True
+        # Now test the repo check failure
+        mock_run.side_effect = subprocess.CalledProcessError(1, 'git')
+        result = analyzer._check_git_repo()
+        assert result is False
+    
+    @patch('subprocess.run')
+    def test_check_git_repo_when_git_not_available(self, mock_run):
+        mock_run.side_effect = FileNotFoundError
+        analyzer = GitDiffAnalyzer()
+        result = analyzer._check_git_repo()
+        assert result is False
     
     def test_run_git_command_success(self):
         analyzer = GitDiffAnalyzer()

@@ -6,12 +6,27 @@ from typing import Dict, List, Optional
 class GitDiffAnalyzer:
     def __init__(self):
         self.git_available = self._check_git()
+        self.in_git_repo = self._check_git_repo()
     
     def _check_git(self) -> bool:
         try:
             subprocess.run(["git", "--version"], capture_output=True, check=True)
             return True
         except (subprocess.CalledProcessError, FileNotFoundError):
+            return False
+    
+    def _check_git_repo(self) -> bool:
+        """Check if current directory is inside a git repository"""
+        if not self.git_available:
+            return False
+        try:
+            result = subprocess.run(
+                ["git", "rev-parse", "--git-dir"],
+                capture_output=True,
+                check=True
+            )
+            return True
+        except subprocess.CalledProcessError:
             return False
     
     def _run_git_command(self, args: List[str]) -> Optional[str]:
