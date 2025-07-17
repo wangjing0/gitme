@@ -53,6 +53,16 @@ Set Anthropic API key if not already set in your environment:
 export ANTHROPIC_API_KEY="your-api-key-here"
 ```
 
+## Privacy & Security Notice
+
+⚠️ **Important**: When using `gitme` or `gitme generate`, the changes will be sent to Anthropic's Claude API for processing. The tool does NOT send your entire codebase - only the diff contents of changed files.
+
+**Please use your discretion when using this tool:**
+- Avoid using it with repositories containing sensitive information, credentials, or proprietary code
+- Review your git diff before running the command to ensure no sensitive data is included
+- Consider using `.gitignore` to exclude sensitive files from git tracking
+
+
 ## Usage
 
 ### Basic Usage
@@ -68,7 +78,7 @@ gitme -a
 gitme -c
 
 # Use different model
-gitme -m claude-3-haiku-20240307
+gitme -m claude-3-haiku-20240307 -c
 ```
 
 ### Message History
