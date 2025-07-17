@@ -17,6 +17,7 @@ gitme show
 ## Features
 
 - Analyzes git diffs to generate contextually relevant commit messages
+- Operates only on local git repositories, NO remote interaction
 - Supports staged changes only or all modified files
 - Saves message history for review
 - Direct commit with confirmation
@@ -110,11 +111,11 @@ gitme show --clear
 
 ## Privacy & Security Notice
 
-⚠️ **Important**: When using `gitme` or `gitme generate`, the changes will be sent to Anthropic's Claude API for processing. The tool does NOT send your entire codebase - only the diff contents of changed files.
+⚠️ **Important**: When using `gitme` or `gitme generate`, the changes will be sent to Anthropic's Claude for processing. The tool does NOT send your entire codebase - only the diff contents of changed files.
 
-**Please use your discretion when using this tool:**
+**Please exercise caution when using this tool:**
 - Avoid using it with repositories containing sensitive information, credentials, or proprietary code
-- Review your git diff before running the command to ensure no sensitive data is included
+- Review your changes before running the command to ensure no sensitive data is included
 - Consider using `.gitignore` to exclude sensitive files from git tracking
 
 ## License
