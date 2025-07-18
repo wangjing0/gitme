@@ -1,7 +1,7 @@
 # A git commit message generator.
 
 ```bash
-git add . && git commit -m "ugh... what did I do? what do I even say here?"
+git add . && git commit -am "ugh... what did I do? what do I even say here?"
 ```
 # ↓
 ```bash
