@@ -80,6 +80,13 @@ class GitDiffAnalyzer:
         
         return file_changes
     
+    def get_untracked_files(self) -> List[str]:
+        """Get list of untracked files in the repository"""
+        output = self._run_git_command(["ls-files", "--others", "--exclude-standard"])
+        if not output:
+            return []
+        return [line.strip() for line in output.split('\n') if line.strip()]
+    
     def format_changes_json(self, staged_only: bool = True) -> str:
         changes = self.get_file_changes(staged_only)
         return json.dumps(changes, indent=2)

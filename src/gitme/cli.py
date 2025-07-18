@@ -81,6 +81,22 @@ def generate(staged: bool, all: bool, model: str, commit: bool):
         # Explicitly requested staged only
         use_staged = True
     
+    # Check for untracked files first
+    untracked_files = analyzer.get_untracked_files()
+    
+    if untracked_files:
+        click.echo(click.style("📁 Untracked files found:", fg="yellow", bold=True))
+        for file in untracked_files:
+            click.echo(f"    {file}")
+        
+        if click.confirm("Do you want to add these untracked files to the staging area?"):
+            import subprocess
+            try:
+                subprocess.run(["git", "add"] + untracked_files, check=True)
+                click.echo(click.style("✓ Untracked files added to staging area", fg="green"))
+            except subprocess.CalledProcessError as e:
+                click.echo(click.style(f"⚠️ Failed to add untracked files: {e}", fg="red"), err=True)
+    
     # Get file changes
     file_changes = analyzer.get_file_changes(staged_only=use_staged)
     
