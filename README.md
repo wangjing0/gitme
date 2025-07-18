@@ -18,6 +18,7 @@ gitme show
 
 - Analyzes git diffs to generate contextually relevant commit messages
 - Operates only on local git repositories, NO remote interaction
+- Detects untracked files and prompts to add them
 - Supports staged changes only or all modified files
 - Saves message history for review
 - Direct commit with confirmation
@@ -38,7 +39,7 @@ Or install directly from GitHub:
 pip install git+https://github.com/wangjing0/gitme.git
 ```
 
-Or install from source:
+Or develop locally:
 
 ```bash
 git clone https://github.com/wangjing0/gitme.git
@@ -61,6 +62,7 @@ export ANTHROPIC_API_KEY="your-api-key-here"
 
 ```bash
 # Generate message for staged changes (default)
+# Will prompt to add any untracked files found
 gitme
 
 # Generate message for all changes
@@ -72,6 +74,20 @@ gitme -c
 # Use different model
 gitme -m claude-3-haiku-20240307 -c
 ```
+
+### Untracked Files Handling
+
+When you run `gitme`, it will automatically detect any untracked files in your repository and prompt you to add them to the staging area:
+
+```bash
+📁 Untracked files found:
+    new_feature.py
+    test_file.js
+ Do you want to add these untracked files to the staging area? [y/N]:
+```
+
+- Choose **y** to add all untracked files to staging and include them in the commit message generation
+- Choose **n** to proceed without the untracked files (they won't be included in the analysis)
 
 ### Message History
 
@@ -104,12 +120,6 @@ gitme show --clear
 - `-r, --all-repos`: Show messages from all repositories
 - `--clear`: Clear message history
 
-## Requirements
-
-- Python 3.8+
-- Git
-- Anthropic API key
-
 ## Privacy & Security Notice
 
 ⚠️ **Important**: When using `gitme` or `gitme generate`, the changes will be sent to Anthropic's Claude for processing. The tool does NOT send your entire codebase - only the diff contents of changed files.
@@ -118,6 +128,16 @@ gitme show --clear
 - Avoid using it with repositories containing sensitive information, credentials, or proprietary code
 - Review your changes before running the command to ensure no sensitive data is included
 - Consider using `.gitignore` to exclude sensitive files from git tracking
+
+## Requirements
+
+- Python 3.8+
+- Git
+- Anthropic API key
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a pull request. @wangjing0
 
 ## License
 
