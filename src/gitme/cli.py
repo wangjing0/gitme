@@ -24,11 +24,9 @@ def cli(ctx):
     Generate Examples:
         gitme              # Generate message for staged changes
         gitme -a           # Generate message for all changes  
-        gitme -c           # Generate and commit all changes
-        gitme -u <branch>  # Generate, commit and push to upstream branch 
-        gitme -c -u <branch>   # Generate, commit and push to upstream branch 
+        gitme -c           # Generate and commit all changes     
         gitme -m MODEL     # Use specific Claude model
-    
+        gitme -u <branch>  # Stealth mode: Generate, commit and push to upstream branch
     Show Examples:
         gitme show         # Show last 10 messages
         gitme show -n 5    # Show last 5 messages
