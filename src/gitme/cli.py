@@ -8,11 +8,13 @@ from .git_diff import GitDiffAnalyzer
 from .llm_client import CommitMessageGenerator
 from .config import Config
 from .storage import MessageStorage
+from . import __version__
 
 
 @click.group(invoke_without_command=True)
+@click.option('--version', '-v', is_flag=True, help='Show version and exit')
 @click.pass_context
-def cli(ctx):
+def cli(ctx, version):
     """GitMe - Git commit message generator
     
     Generate intelligent git commit messages by analyzing your code changes.
@@ -27,6 +29,7 @@ def cli(ctx):
         gitme -c           # Generate and commit all changes     
         gitme -m MODEL     # Use specific Claude model
         gitme -u <branch>  # Stealth mode: Generate, commit and push to upstream branch
+        gitme -v           # Show version information
     Show Examples:
         gitme show         # Show last 10 messages
         gitme show -n 5    # Show last 5 messages
@@ -36,6 +39,10 @@ def cli(ctx):
     Environment:
         ANTHROPIC_API_KEY must be set for Claude API access
     """
+    if version:
+        click.echo(f"gitme version {__version__}")
+        ctx.exit()
+    
     if ctx.invoked_subcommand is None:
         # If no subcommand, show help
         click.echo(ctx.get_help())
@@ -200,8 +207,8 @@ def main():
     """Entry point that provides backward compatibility"""
     import sys
     
-    # If help flag, show the main help
-    if '--help' in sys.argv or '-h' in sys.argv:
+    # If help flag or version flag, show the main help/version
+    if '--help' in sys.argv or '-h' in sys.argv or '--version' in sys.argv or '-v' in sys.argv:
         # Remove the argument so Click handles it properly
         cli()
     # If no arguments, default to generate command 
