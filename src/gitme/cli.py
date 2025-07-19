@@ -25,6 +25,8 @@ def cli(ctx):
         gitme              # Generate message for staged changes
         gitme -a           # Generate message for all changes  
         gitme -c           # Generate and commit all changes
+        gitme -u main      # Generate, commit and push to upstream branch 'main'
+        gitme -c -u main   # Generate, commit and push to upstream branch 'main'
         gitme -m MODEL     # Use specific Claude model
     
     Show Examples:
@@ -47,11 +49,14 @@ def cli(ctx):
 @click.option('--all', '-a', is_flag=True, help='Analyze all changes (staged and unstaged)')
 @click.option('--model', '-m', default='claude-3-7-sonnet-20250219', help='Claude model to use')
 @click.option('--commit', '-c', is_flag=True, help='Create commit with generated message')
-def generate(staged: bool, all: bool, model: str, commit: bool):
+@click.option('--upstream', '-u', help='Create commit and push to upstream branch (specify branch name)')
+def generate(staged: bool, all: bool, model: str, commit: bool, upstream: Optional[str]):
     """Generate a commit message for current changes
     
     By default analyzes staged changes only. Use -a for all changes.
     Use -c to automatically commit after generating the message.
+    Use -u <branch> to commit and push to upstream branch with confirmations.
+    You can combine -c and -u flags together.
     """
     
     analyzer = GitDiffAnalyzer()
@@ -74,8 +79,8 @@ def generate(staged: bool, all: bool, model: str, commit: bool):
     # Default behavior: staged changes only
     use_staged = True
     
-    if all or commit:
-        # For --all or --commit, analyze all changes
+    if all or commit or upstream:
+        # For --all, --commit, or --upstream, analyze all changes
         use_staged = False
     elif staged:
         # Explicitly requested staged only
@@ -120,13 +125,24 @@ def generate(staged: bool, all: bool, model: str, commit: bool):
         click.echo(click.style("🎉 Generated commit message:", fg="green", bold=True))
         click.echo(click.style(commit_message, fg="cyan"))
         
-        if commit:
+        if commit or upstream:
             # Ask for confirmation before committing
             if click.confirm("Do you want to create a commit with this message?"):
                 import subprocess
                 try:
                     subprocess.run(["git", "commit", "-a", "-m", commit_message], check=True)
                     click.echo(click.style("✓ Commit created successfully!", fg="green", bold=True))
+                    
+                    # If upstream flag is used, also ask about pushing
+                    if upstream:
+                        if click.confirm(f"Do you want to push to upstream branch '{upstream}'?"):
+                            try:
+                                subprocess.run(["git", "push", "-u", "origin", upstream], check=True)
+                                click.echo(click.style(f"✓ Successfully pushed to upstream branch '{upstream}'!", fg="green", bold=True))
+                            except subprocess.CalledProcessError as e:
+                                click.echo(click.style(f"𐩃 Failed to push to upstream: {e}", fg="red"), err=True)
+                                click.echo(click.style("💡 You may need to set up the upstream branch first", fg="yellow"), err=True)
+                        
                 except subprocess.CalledProcessError as e:
                     click.echo(click.style(f"𐩃 Failed to create commit: {e}", fg="red"), err=True)
     
