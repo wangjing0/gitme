@@ -25,8 +25,8 @@ def cli(ctx):
         gitme              # Generate message for staged changes
         gitme -a           # Generate message for all changes  
         gitme -c           # Generate and commit all changes
-        gitme -u main      # Generate, commit and push to upstream branch 'main'
-        gitme -c -u main   # Generate, commit and push to upstream branch 'main'
+        gitme -u <branch>  # Generate, commit and push to upstream branch 
+        gitme -c -u <branch>   # Generate, commit and push to upstream branch 
         gitme -m MODEL     # Use specific Claude model
     
     Show Examples:
