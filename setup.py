@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="gitme-cli",
-    version="0.4.0",
+    version="0.4.1",
     author="Jing Wang",
     author_email="jingwang.physics@gmail.com",
     description="Git commit message generator",
