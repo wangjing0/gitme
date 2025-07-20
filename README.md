@@ -5,26 +5,25 @@ git add . && git commit -am "ugh... what did I do? what do I even say here?"
 ```
 # ↓
 ```bash
-gitme -c              # Use Anthropic Claude (default)
-gitme -p openai -c    # Use OpenAI as model provider
+gitme -c
 ```
-
+![gitme-cli-generate](https://github.com/wangjing0/gitme/raw/main/images/gitcommit.png)
 ```bash
 gitme show
 ```
 
-![gitme-cli](https://github.com/wangjing0/gitme/raw/main/commits.png)
+![gitme-cli-show](https://github.com/wangjing0/gitme/raw/main/images/commits.png)
 
 ## Features
 
 - Analyzes git diffs to generate contextually relevant commit messages
-- **Multiple AI Providers**: Choose between Anthropic Claude or OpenAI GPT models
 - Operates only on local git repositories, NO remote interaction
 - Detects untracked files and prompts to add them
-- Supports staged changes only or all modified files
-- Saves message history for review
-- Direct commit with confirmation
+- Direct commit with user confirmation
+- **Multiple AI Providers**: Choose between Anthropic or OpenAI, default is Anthropic
 - Selectable model options for both providers
+- Supports staged changes only or all modified files
+- Saves message history for search and review
 - Repository-specific message storage
 
 ## Installation
@@ -60,15 +59,9 @@ Choose one or both providers:
 export ANTHROPIC_API_KEY="your-anthropic-api-key-here"
 ```
 
-**For OpenAI GPT:**
+**For OpenAI GPT (Optional):**
 ```bash
 export OPENAI_API_KEY="your-openai-api-key-here"
-```
-
-**Optional dependencies:**
-```bash
-# For OpenAI support
-pip install openai
 ```
 
 
@@ -94,7 +87,7 @@ gitme -c
 gitme -p openai
 
 # Use OpenAI with specific model
-gitme -p openai -m gpt-4
+gitme -p openai -m gpt-4o
 
 # Use Anthropic with specific model
 gitme -m claude-3-haiku-20240307
@@ -115,12 +108,12 @@ When you run `gitme`, it will automatically detect any untracked files in your r
 ```
 
 - Choose **y** to add all untracked files to staging and include them in the commit message generation
-- Choose **n** to proceed without the untracked files (they won't be included in the analysis)
+- Choose **N** to proceed without the untracked files (they won't be included in the analysis)
 
 ### Message History
 
 ```bash
-# Show previous messages
+# Show previous messages (includes provider/model info)
 gitme show
 
 # Show last 5 messages
@@ -131,6 +124,27 @@ gitme show -r
 
 # Clear history
 gitme show --clear
+```
+
+**Enhanced Message History Display:**
+```
+[1] 2025-07-20 10:30:45
+    💬 Message:
+    Add user authentication feature
+    
+    - Modified auth.py
+    - Updated config.json
+    - Added login.html
+    🤖 AI Provider: Anthropic (claude-3-7-sonnet-20250219)
+    📝 Files changed: 3
+
+[2] 2025-07-20 09:15:22
+    💬 Message:
+    Fix authentication bug
+    
+    - Fixed login validation
+    🤖 AI Provider: Openai (gpt-4o-mini)
+    📝 Files changed: 1
 ```
 
 ## Options
@@ -160,23 +174,6 @@ gitme show --clear
 - `gpt-4o-mini` (default when using OpenAI)
 - `gpt-4o`
 - `gpt-4`
-- `gpt-3.5-turbo`
-
-### Advanced Examples
-
-```bash
-# Compare providers for the same changes
-gitme -p anthropic -m claude-3-haiku-20240307  # Fast, cost-effective
-gitme -p openai -m gpt-4o-mini                 # Alternative fast option
-
-# High-quality commit messages
-gitme -p openai -m gpt-4o                      # Premium OpenAI model
-gitme -p anthropic                             # Default Claude Sonnet
-
-# Quick commit workflows
-gitme -p openai -c                             # OpenAI + auto-commit
-gitme -p anthropic -a -c                      # Claude + all changes + commit
-```
 
 ## Privacy & Security Notice
 
@@ -195,12 +192,11 @@ gitme -p anthropic -a -c                      # Claude + all changes + commit
 - Git
 - At least one AI provider API key:
   - Anthropic API key for Claude models
-  - OpenAI API key for GPT models
-- Optional: `openai` Python package for OpenAI support
+  - OpenAI API key for GPT models, `openai` Python package for OpenAI support
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a pull request. @wangjing0
+Contributions are welcome! Please feel free to submit a pull request. ❤️ @wangjing0 
 
 ## License
 

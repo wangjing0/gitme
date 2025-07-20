@@ -33,9 +33,9 @@ def cli(ctx, version):
         gitme -u <branch>  # Stealth mode: Generate, commit and push to upstream branch
         
     Show Examples:
-        gitme show         # Show last 10 messages
+        gitme show         # Show last 10 messages with provider info
         gitme show -n 5    # Show last 5 messages
-        gitme show -r      # Show from all repositories
+        gitme show -r      # Show from all repositories  
         gitme show --clear # Clear message history
     
     Environment:
@@ -137,7 +137,7 @@ def generate(staged: bool, all: bool, model: str, provider: str, commit: bool, u
         # Save the generated message
         storage = MessageStorage()
         repo_path = os.getcwd()
-        storage.save_message(commit_message, repo_path, file_changes)
+        storage.save_message(commit_message, repo_path, file_changes, provider, model)
         
         click.echo()
         click.echo(click.style("🎉 Generated commit message:", fg="green", bold=True))
@@ -211,6 +211,14 @@ def show(limit: int, all_repos: bool, clear: bool):
         # Display multi-line messages with proper indentation
         for line in entry['message'].split('\n'):
             click.echo(f"    {line}")
+        
+        # Show provider and model information
+        provider = entry.get('provider', 'unknown')
+        model = entry.get('model', 'unknown')
+        if provider or model:
+            provider_display = provider.title() if provider != 'unknown' else 'Unknown'
+            model_display = model if model and model != 'unknown' else 'Unknown'
+            click.echo(f"    {click.style('🤖 AI Provider:', fg='magenta')} {provider_display} ({model_display})")
         
         # Show file changes summary
         file_changes = entry.get('file_changes', {})

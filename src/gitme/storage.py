@@ -14,14 +14,16 @@ class MessageStorage:
     def _ensure_storage_dir(self):
         self.storage_dir.mkdir(exist_ok=True)
     
-    def save_message(self, message: str, repo_path: str, file_changes: Dict) -> None:
+    def save_message(self, message: str, repo_path: str, file_changes: Dict, provider: str = "anthropic", model: str = None) -> None:
         messages = self._load_messages()
         
         entry = {
             "timestamp": datetime.now().isoformat(),
             "repo_path": repo_path,
             "message": message,
-            "file_changes": file_changes
+            "file_changes": file_changes,
+            "provider": provider,
+            "model": model
         }
         
         messages.append(entry)
