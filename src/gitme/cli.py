@@ -22,14 +22,16 @@ def cli(ctx, version):
     Commands:
         gitme [OPTIONS]         Generate commit message
         gitme show [OPTIONS]    Show previous commit messages
+        gitme -v                Show version information
     
     Generate Examples:
         gitme              # Generate message for staged changes
         gitme -a           # Generate message for all changes  
-        gitme -c           # Generate and commit all changes     
-        gitme -m MODEL     # Use specific Claude model
+        gitme -c           # Generate message and commit all changes     
+        gitme -p openai    # Use OpenAI instead of default Anthropic
+        gitme -p openai -m gpt-4o-mini  # Use OpenAI's GPT-4o-mini model
         gitme -u <branch>  # Stealth mode: Generate, commit and push to upstream branch
-        gitme -v           # Show version information
+        
     Show Examples:
         gitme show         # Show last 10 messages
         gitme show -n 5    # Show last 5 messages
@@ -38,6 +40,7 @@ def cli(ctx, version):
     
     Environment:
         ANTHROPIC_API_KEY must be set for Claude API access
+        OPENAI_API_KEY must be set for OpenAI API access
     """
     if version:
         click.echo(f"gitme version {__version__}")
@@ -52,10 +55,11 @@ def cli(ctx, version):
 @cli.command()
 @click.option('--staged', '-s', is_flag=True, help='Analyze only staged changes')
 @click.option('--all', '-a', is_flag=True, help='Analyze all changes (staged and unstaged)')
-@click.option('--model', '-m', default='claude-3-7-sonnet-20250219', help='Claude model to use')
+@click.option('--model', '-m', default='claude-3-7-sonnet-20250219', help='Model to use (Claude or OpenAI)')
+@click.option('--provider', '-p', type=click.Choice(['anthropic', 'openai']), default='anthropic', help='LLM provider to use (default: anthropic)')
 @click.option('--commit', '-c', is_flag=True, help='Create commit with generated message')
 @click.option('--upstream', '-u', help='Create commit and push to upstream branch (specify branch name)')
-def generate(staged: bool, all: bool, model: str, commit: bool, upstream: Optional[str]):
+def generate(staged: bool, all: bool, model: str, provider: str, commit: bool, upstream: Optional[str]):
     """Generate a commit message for current changes
     
     By default analyzes staged changes only. Use -a for all changes.
@@ -116,10 +120,19 @@ def generate(staged: bool, all: bool, model: str, commit: bool, upstream: Option
     
     # Generate commit message
     try:
-        generator = CommitMessageGenerator()
-        generator.model = model
-        
-        commit_message = generator.generate_commit_message(file_changes)
+        if provider == 'openai':
+            # Set default OpenAI model if Claude model was specified
+            if model == 'claude-3-7-sonnet-20250219':
+                model = 'gpt-4o-mini'
+            commit_message = CommitMessageGenerator.generate_commit_message_openai(
+                file_changes=file_changes,
+                model=model
+            )
+        else:
+            # Use Anthropic (default)
+            generator = CommitMessageGenerator()
+            generator.model = model
+            commit_message = generator.generate_commit_message(file_changes)
         
         # Save the generated message
         storage = MessageStorage()
@@ -153,7 +166,10 @@ def generate(staged: bool, all: bool, model: str, commit: bool, upstream: Option
     
     except ValueError as e:
         click.echo(click.style(f"𐩃 Error: {e}", fg="red", bold=True), err=True)
-        click.echo(click.style("💡 Please set ANTHROPIC_API_KEY environment variable", fg="yellow"), err=True)
+        if provider == 'openai':
+            click.echo(click.style("💡 Please set OPENAI_API_KEY environment variable", fg="yellow"), err=True)
+        else:
+            click.echo(click.style("💡 Please set ANTHROPIC_API_KEY environment variable", fg="yellow"), err=True)
     except Exception as e:
         click.echo(click.style(f"𐩃 Error: {e}", fg="red", bold=True), err=True)
 

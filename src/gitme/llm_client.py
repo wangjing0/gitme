@@ -3,6 +3,12 @@ import json
 from typing import Dict, Optional
 from anthropic import Anthropic
 
+try:
+    from openai import OpenAI
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
+
 
 class CommitMessageGenerator:
     def __init__(self, api_key: Optional[str] = None):
@@ -12,6 +18,42 @@ class CommitMessageGenerator:
         
         self.client = Anthropic(api_key=self.api_key)
         self.model = "claude-3-7-sonnet-20250219"  # Using Sonnet 3.7 for best balance
+        self._is_openai = False
+    
+    @classmethod
+    def generate_commit_message_openai(cls, file_changes: Dict[str, str], api_key: Optional[str] = None, model: str = "gpt-4o-mini"):
+        """Create a CommitMessageGenerator instance configured for OpenAI API."""
+        if not OPENAI_AVAILABLE:
+            raise ImportError("OpenAI library not installed. Install with: pip install openai")
+        
+        instance = cls.__new__(cls)
+        instance.api_key = api_key or os.environ.get("OPENAI_API_KEY")
+        if not instance.api_key:
+            raise ValueError("OpenAI API key is required. Set OPENAI_API_KEY environment variable.")
+        
+        instance.client = OpenAI(api_key=instance.api_key)
+        instance.model = model
+        instance._is_openai = True
+        prompt = instance._create_prompt(file_changes)
+        
+        try:
+            response = instance.client.chat.completions.create(
+                model=instance.model,
+                max_tokens=500,
+                temperature=0.3,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ]
+            )
+            
+            return response.choices[0].message.content.strip()
+        
+        except Exception as e:
+            print(f"Error generating commit message: {e}")
+            return "Update files"
     
     def generate_commit_message(self, file_changes: Dict[str, str]) -> str:
         if not file_changes:
