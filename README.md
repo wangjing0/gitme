@@ -19,10 +19,10 @@ gitme show
 - Analyzes git diffs to generate contextually relevant commit messages
 - Operates only on local git repositories, NO remote interaction
 - Detects untracked files and prompts to add them
+- Supports staged changes only or all modified files
 - Direct commit with user confirmation
 - **Multiple AI Providers**: Choose between Anthropic or OpenAI, default is Anthropic
 - Selectable model options for both providers
-- Supports staged changes only or all modified files
 - Saves message history for search and review
 - Repository-specific message storage
 
@@ -47,8 +47,6 @@ git clone https://github.com/wangjing0/gitme.git
 cd gitme
 pip install -e .
 ```
-
-## Setup
 
 ### AI Provider Setup
 
@@ -79,8 +77,6 @@ gitme -a
 # Generate message and commit
 gitme -c
 ```
-
-### Provider Selection
 
 ```bash
 # Use OpenAI instead of Anthropic (default)
