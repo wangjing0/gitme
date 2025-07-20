@@ -12,7 +12,7 @@ gitme -c
 gitme show
 ```
 
-![gitme-cli-show](https://github.com/wangjing0/gitme/raw/main/images/commits.png)
+![gitme-cli-show](https://github.com/wangjing0/gitme/raw/main/images/gitshow.png)
 
 ## Features
 
