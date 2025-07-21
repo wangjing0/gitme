@@ -190,6 +190,12 @@ gitme show --clear
   - Anthropic API key for Claude models
   - OpenAI API key for GPT models, `openai` Python package for OpenAI support
 
+## New Release
+
+```bash
+chmod +x release.sh && ./release.sh 0.4.4
+```
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a pull request. ❤️ @wangjing0 
