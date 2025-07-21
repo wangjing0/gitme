@@ -55,7 +55,7 @@ def cli(ctx, version):
 @cli.command()
 @click.option('--staged', '-s', is_flag=True, help='Analyze only staged changes')
 @click.option('--all', '-a', is_flag=True, help='Analyze all changes (staged and unstaged)')
-@click.option('--model', '-m', default='claude-3-7-sonnet-20250219', help='Model to use (Claude or OpenAI)')
+@click.option('--model', '-m', default='claude-3-5-haiku-latest', help='Model to use (Claude or OpenAI)')
 @click.option('--provider', '-p', type=click.Choice(['anthropic', 'openai']), default='anthropic', help='LLM provider to use (default: anthropic)')
 @click.option('--commit', '-c', is_flag=True, help='Create commit with generated message')
 @click.option('--upstream', '-u', help='Create commit and push to upstream branch (specify branch name)')
@@ -122,8 +122,7 @@ def generate(staged: bool, all: bool, model: str, provider: str, commit: bool, u
     try:
         if provider == 'openai':
             # Set default OpenAI model if Claude model was specified
-            if model == 'claude-3-7-sonnet-20250219':
-                model = 'gpt-4o-mini'
+            model = 'gpt-4o-mini'
             commit_message = CommitMessageGenerator.generate_commit_message_openai(
                 file_changes=file_changes,
                 model=model
