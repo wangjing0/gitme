@@ -12,7 +12,6 @@ VERSION=$1
 
 # Update version in files
 echo "Updating version to $VERSION..."
-sed -i '' "s/version=\"[^\"]*\"/version=\"$VERSION\"/" setup.py
 sed -i '' "s/version = \"[^\"]*\"/version = \"$VERSION\"/" pyproject.toml
 sed -i '' "s/__version__ = \"[^\"]*\"/__version__ = \"$VERSION\"/" src/gitme/__init__.py
 
