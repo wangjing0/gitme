@@ -17,7 +17,7 @@ class CommitMessageGenerator:
             raise ValueError("Anthropic API key is required. Set ANTHROPIC_API_KEY environment variable.")
         
         self.client = Anthropic(api_key=self.api_key)
-        self.model = "claude-3-7-sonnet-20250219"  # Using Sonnet 3.7 for best balance
+        self.model = "claude-3-5-haiku-latest"  # Using Haiku 3.5 latest
         self._is_openai = False
     
     @classmethod

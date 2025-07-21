@@ -3,7 +3,7 @@
 ```bash
 git add . && git commit -am "ugh... what did I do? what do I even say here?"
 ```
-# ↓
+## ↓
 ```bash
 gitme -c
 ```
@@ -86,7 +86,7 @@ gitme -p openai
 gitme -p openai -m gpt-4o
 
 # Use Anthropic with specific model
-gitme -m claude-3-haiku-20240307
+gitme -m claude-3-5-haiku-latest
 
 # Combine with other options
 gitme -p openai -c  # Use OpenAI and commit
@@ -131,7 +131,7 @@ gitme show --clear
     - Modified auth.py
     - Updated config.json
     - Added login.html
-    🤖 AI Provider: Anthropic (claude-3-7-sonnet-20250219)
+    🤖 AI Provider: Anthropic (claude-3-5-haiku-latest)
     📝 Files changed: 3
 
 [2] 2025-07-20 09:15:22
@@ -162,7 +162,7 @@ gitme show --clear
 ### Available Models
 
 **Anthropic Claude:**
-- `claude-3-7-sonnet-20250219` (default)
+- `claude-3-5-haiku-latest` (default)
 - `claude-3-haiku-20240307`
 - `claude-3-sonnet-20240229`
 
