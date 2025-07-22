@@ -17,10 +17,9 @@ gitme show
 ## Features
 
 - Analyzes git diffs to generate contextually relevant commit messages
-- Operates only on local git repositories, NO remote interaction
 - Detects untracked files and prompts to add them
 - Supports staged changes only or all modified files
-- Direct commit and push to upstream branch with user confirmation on every step
+- Direct commit and push to upstream branch with user confirmation on every step, extremely lightweight and fast.
 - **Multiple AI Providers**: Choose between Anthropic or OpenAI, default is Anthropic
 - Model options for both providers
 - File changes and commit message history for logging, search and review at local
@@ -62,7 +61,6 @@ export ANTHROPIC_API_KEY="your-anthropic-api-key-here"
 export OPENAI_API_KEY="your-openai-api-key-here"
 ```
 
-
 **Note:** All `gitme` commands must be run from within a git repository directory. If you're not in a git repository, you'll see an error message prompting you to run `git init`.
 
 ### Basic Usage
@@ -76,6 +74,9 @@ gitme -a
 
 # Generate message and commit
 gitme -c
+
+# Generate message and commit and push to remote branch
+gitme -u dev
 ```
 
 ```bash
