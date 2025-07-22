@@ -1,11 +1,11 @@
-# A git commit message generator.
+# A git commit message generator, that doesn't interrupt Claude code flow.
 
 ```bash
-git add . && git commit -am "ugh... what did I do? what do I even say here?"
+git add . && git commit -am "ugh... what did I do? what do I even say here?" && git push -u origin dev
 ```
 ## ↓
 ```bash
-gitme -c
+gitme -u dev
 ```
 ![gitme-cli-generate](https://github.com/wangjing0/gitme/raw/main/images/gitcommit.png)
 ```bash
