@@ -1,4 +1,4 @@
-# A git commit message generator, that doesn't interrupt Claude code flow.
+## A git commit message generator that doesn't interrupt Claude code flow.
 
 ```bash
 git add . && git commit -am "ugh... what did I do? what do I even say here?" && git push -u origin dev
@@ -20,10 +20,10 @@ gitme show
 - Operates only on local git repositories, NO remote interaction
 - Detects untracked files and prompts to add them
 - Supports staged changes only or all modified files
-- Direct commit with user confirmation
+- Direct commit and push to upstream branch with user confirmation on every step
 - **Multiple AI Providers**: Choose between Anthropic or OpenAI, default is Anthropic
-- Selectable model options for both providers
-- Saves message history for search and review
+- Model options for both providers
+- File changes and commit message history for logging, search and review at local
 - Repository-specific message storage
 
 ## Installation
