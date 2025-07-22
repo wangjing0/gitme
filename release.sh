@@ -3,12 +3,19 @@
 
 # Check if version argument is provided
 if [ -z "$1" ]; then
-    echo "Usage: ./release.sh <version>"
+    echo "Usage: ./release.sh <version> [--yes]"
     echo "Example: ./release.sh 0.2.0"
+    echo "Use --yes to skip confirmation prompt"
     exit 1
 fi
 
 VERSION=$1
+SKIP_CONFIRM=false
+
+# Check for --yes flag
+if [ "$2" = "--yes" ]; then
+    SKIP_CONFIRM=true
+fi
 
 # Update version in files
 echo "Updating version to $VERSION..."
@@ -26,8 +33,15 @@ twine check dist/*
 
 # Confirm before uploading
 echo "Ready to upload version $VERSION to PyPI"
-read -p "Continue? (y/n) " -n 1 -r
-echo
+
+if [ "$SKIP_CONFIRM" = true ]; then
+    REPLY="y"
+    echo "Skipping confirmation (--yes flag provided)"
+else
+    read -p "Continue? (y/n) " -n 1 -r
+    echo
+fi
+
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     twine upload dist/*
     
