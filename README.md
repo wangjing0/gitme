@@ -12,10 +12,13 @@ gitme -u <your-remote-branch>
 ```
 
 </div>
+
 ![gitme-cli-generate](https://github.com/wangjing0/gitme/raw/main/images/gitcommit.png)
+
 ```bash
 gitme show
 ```
+
 ![gitme-cli-show](https://github.com/wangjing0/gitme/raw/main/images/gitshow.png)
 
 ## Features
