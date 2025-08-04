@@ -49,13 +49,7 @@ else
 fi
 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    if command -v uv &> /dev/null; then
-        echo "Using uv to publish package..."
-        uv publish
-    else
-        echo "Using twine to upload package..."
-        twine upload dist/*
-    fi
+    echo "Skipping PyPI upload..."
     
     # Create git tag
     git add -A
@@ -64,6 +58,10 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     git push origin main --tags
     
     echo "Release $VERSION complete!"
+    echo "Package built in dist/ directory. Upload manually if needed:"
+    echo "  uv publish"
+    echo "  or"
+    echo "  twine upload dist/*"
 else
     echo "Release cancelled"
 fi

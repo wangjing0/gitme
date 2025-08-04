@@ -201,7 +201,7 @@ gitme show --clear
 ## New Release
 
 ```bash
-chmod +x release.sh && ./release.sh 0.4.4
+chmod +x release.sh && ./release.sh <version>
 ```
 
 ## Contributing
