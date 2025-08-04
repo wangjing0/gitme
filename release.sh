@@ -25,11 +25,17 @@ sed -i '' "s/__version__ = \"[^\"]*\"/__version__ = \"$VERSION\"/" src/gitme/__i
 # Clean and build
 echo "Building package..."
 rm -rf dist/ build/ src/*.egg-info
-python -m build
+uv build
 
 # Check package
 echo "Checking package..."
-twine check dist/*
+if command -v uv &> /dev/null; then
+    echo "Using uv to check package..."
+    # uv doesn't have check yet, fall back to twine
+    twine check dist/*
+else
+    twine check dist/*
+fi
 
 # Confirm before uploading
 echo "Ready to upload version $VERSION to PyPI"
@@ -43,7 +49,13 @@ else
 fi
 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    twine upload dist/*
+    if command -v uv &> /dev/null; then
+        echo "Using uv to publish package..."
+        uv publish
+    else
+        echo "Using twine to upload package..."
+        twine upload dist/*
+    fi
     
     # Create git tag
     git add -A
