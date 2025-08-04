@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gitme-cli"
-version = "0.5.0"
+version = "0.5.1"
 description = "Git commit message generator"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -16,14 +16,7 @@ keywords = ["git", "commit", "message", "generator", "ai", "claude", "openai"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "Topic :: Software Development :: Version Control :: Git",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Version Control :: Git"
 ]
 dependencies = [
     "click>=8.0.0",
@@ -33,7 +26,6 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/wangjing0/gitme"
 Repository = "https://github.com/wangjing0/gitme"
-Issues = "https://github.com/wangjing0/gitme/issues"
 
 [project.optional-dependencies]
 openai = ["openai>=1.0.0"]

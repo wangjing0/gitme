@@ -1,17 +1,21 @@
+
+<div align="center">
+
 ## A git commit message generator that doesn't interrupt Claude code flow.
 
 ```bash
 git add . && git commit -am "ugh... what did I do? what do I even say here?" && git push -u origin dev
 ```
-## ↓
+### ⬇️ 
 ```bash
-gitme -u dev
+gitme -u <your-remote-branch>
 ```
+
+</div>
 ![gitme-cli-generate](https://github.com/wangjing0/gitme/raw/main/images/gitcommit.png)
 ```bash
 gitme show
 ```
-
 ![gitme-cli-show](https://github.com/wangjing0/gitme/raw/main/images/gitshow.png)
 
 ## Features
