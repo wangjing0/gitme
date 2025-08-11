@@ -1,7 +1,7 @@
 
 <div align="center">
 
-## A git commit message generator that doesn't interrupt Claude code flow.
+## A git commit message generator that doesn't interrupt your vibe coding flow.
 
 ```bash
 git add . && git commit -am "ugh... what did I do? what do I even say here?" && git push -u origin dev
@@ -198,11 +198,19 @@ gitme show --clear
   - Anthropic API key for Claude models
   - OpenAI API key for GPT models, `openai` Python package for OpenAI support
 
+
 ## New Release
 
 ```bash
 chmod +x release.sh && ./release.sh <version>
 ```
+
+
+## Roadmap
+
+- [ ] Add a way to add custom prompt to the AI provider
+- [ ] User feedback on the generated message and modify accordingly
+- [ ] Local models with Ollama support
 
 ## Contributing
 
