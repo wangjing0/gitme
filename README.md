@@ -4,7 +4,7 @@
 ## A git commit message generator that doesn't interrupt your coding flow.
 
 ```bash
-git add . && git commit -am "ugh... what did I do? what do I even say here?" && git push -u origin dev
+git add . && git commit -am "ugh... I vide all the way, what did I do? what do I even say here?" && git push -u origin dev
 ```
 ### ⬇️ 
 ```bash
@@ -26,7 +26,7 @@ gitme show
 - Analyzes git diffs to generate contextually relevant commit messages
 - Detects untracked files and prompts to add them
 - Supports staged changes only or all modified files
-- Direct commit and push to upstream branch with user confirmation on every step, extremely lightweight and fast.
+- Streamline your git workflow: add files, commit and push to upstream branch with user confirmation on every step, extremely lightweight and fast.
 - **User input**: Option to edit and then confirm the messages before committing
 - **Multiple AI Providers**: Choose between Anthropic or OpenAI, default is Anthropic
 - Model options for both providers
@@ -84,7 +84,7 @@ gitme -a
 gitme -c
 
 # Generate message and commit and push to remote branch
-gitme -u dev
+gitme -u <remote-branch>
 ```
 
 ```bash
@@ -161,6 +161,7 @@ gitme show --clear
 - `-p, --provider`: Choose AI provider (`anthropic` or `openai`, default: anthropic)
 - `-m, --model`: Model to use (provider-specific)
 - `-c, --commit`: Create commit with generated message (uses `git commit -a -m "auto-generated message"`)
+- `-u, --upstream`:Analyze all changes and create commit and push to upstream branch (specify branch name)
 
 ### Show Options
 
@@ -205,12 +206,15 @@ gitme show --clear
 ```bash
 chmod +x release.sh && ./release.sh <version>
 ```
-
+then upload to PyPI
+```bash
+twine upload dist/*
+```
 
 ## Roadmap
 
+- [x] User feedback on the generated message and modify accordingly
 - [ ] Add a way to add custom prompt to the AI provider
-- [ ] User feedback on the generated message and modify accordingly
 - [ ] Local models with Ollama support
 
 ## Contributing
