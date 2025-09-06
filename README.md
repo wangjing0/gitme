@@ -27,7 +27,7 @@ gitme show
 - Detects untracked files and prompts to add them
 - Supports staged changes only or all modified files
 - Direct commit and push to upstream branch with user confirmation on every step, extremely lightweight and fast.
-- **Message Modification**: Option to edit AI-generated commit messages before committing
+- **User input**: Option to edit and then confirm the messages before committing
 - **Multiple AI Providers**: Choose between Anthropic or OpenAI, default is Anthropic
 - Model options for both providers
 - File changes and commit message history for logging, search and review at local
