@@ -133,10 +133,11 @@ def generate(staged: bool, all: bool, model: str, provider: str, commit: bool, u
             generator.model = model
             commit_message = generator.generate_commit_message(file_changes)
         
-        # Save the generated message
+        # do not save the generated message 
         storage = MessageStorage()
         repo_path = os.getcwd()
-        storage.save_message(commit_message, repo_path, file_changes, provider, model)
+        original_message = commit_message
+        #storage.save_message(original_message, repo_path, file_changes, provider, model)
         
         click.echo()
         click.echo(click.style("🎉 Generated commit message:", fg="green", bold=True))
@@ -145,6 +146,13 @@ def generate(staged: bool, all: bool, model: str, provider: str, commit: bool, u
         if commit or upstream:
             # Ask for confirmation before committing
             if click.confirm("Do you want to create a commit with this message?"):
+                # Allow user to modify the commit message
+                if click.confirm("Do you want to modify the commit message?", default=False):
+                    commit_message = click.prompt("Enter your commit message:", default=original_message, show_default=False)
+                    # Save the modified message to storage
+                    storage.save_message(commit_message, repo_path, file_changes, provider, model+'+ human-modified')
+                else:
+                    storage.save_message(commit_message, repo_path, file_changes, provider, model)
                 import subprocess
                 try:
                     subprocess.run(["git", "commit", "-a", "-m", commit_message], check=True)
