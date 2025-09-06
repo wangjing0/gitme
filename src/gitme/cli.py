@@ -147,7 +147,7 @@ def generate(staged: bool, all: bool, model: str, provider: str, commit: bool, u
             # Ask for confirmation before committing
             if click.confirm("Do you want to create a commit with this message?"):
                 # Allow user to modify the commit message
-                if click.confirm("Do you want to modify the commit message?", default=False):
+                if click.confirm("Do you want to modify the commit message? default is N - no modification", default=False):
                     human_message = click.prompt("Enter your commit message:", default=original_message, show_default=False)
                     commit_message = human_message + '\n' + commit_message
                     # Save the modified message to storage
