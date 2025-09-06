@@ -148,9 +148,10 @@ def generate(staged: bool, all: bool, model: str, provider: str, commit: bool, u
             if click.confirm("Do you want to create a commit with this message?"):
                 # Allow user to modify the commit message
                 if click.confirm("Do you want to modify the commit message?", default=False):
-                    commit_message = click.prompt("Enter your commit message:", default=original_message, show_default=False)
+                    human_message = click.prompt("Enter your commit message:", default=original_message, show_default=False)
+                    commit_message = human_message + '\n' + commit_message
                     # Save the modified message to storage
-                    storage.save_message(commit_message, repo_path, file_changes, provider, model+'+ human-modified')
+                    storage.save_message(commit_message, repo_path, file_changes, provider,  'human-modified, ' + model)
                 else:
                     storage.save_message(commit_message, repo_path, file_changes, provider, model)
                 import subprocess
