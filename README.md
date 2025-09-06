@@ -1,7 +1,7 @@
 
 <div align="center">
 
-## A git commit message generator that doesn't interrupt your vibe coding flow.
+## A git commit message generator that doesn't interrupt your coding flow.
 
 ```bash
 git add . && git commit -am "ugh... what did I do? what do I even say here?" && git push -u origin dev

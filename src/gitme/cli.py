@@ -150,6 +150,10 @@ def generate(staged: bool, all: bool, model: str, provider: str, commit: bool, u
                 if click.confirm("Do you want to modify the commit message? default is N - no modification", default=False):
                     human_message = click.prompt("Enter your commit message:", default=original_message, show_default=False)
                     commit_message = human_message + '\n' + commit_message
+                    # Display the final commit message
+                    click.echo()
+                    click.echo(click.style("📝 Final commit message:", fg="green", bold=True))
+                    click.echo(click.style(commit_message, fg="cyan"))
                     # Save the modified message to storage
                     storage.save_message(commit_message, repo_path, file_changes, provider,  'human-modified, ' + model)
                 else:
