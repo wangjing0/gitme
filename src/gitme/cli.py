@@ -112,7 +112,7 @@ def generate(staged: bool, all: bool, model: str, provider: str, commit: bool, u
         for file in untracked_files:
             click.echo(f"    {file}")
         
-        if click.confirm("Add these untracked files to staging area?", default=True):
+        if click.confirm("Add these untracked files to staging area?"):
             import subprocess
             try:
                 subprocess.run(["git", "add"] + untracked_files, check=True)
@@ -156,11 +156,11 @@ def generate(staged: bool, all: bool, model: str, provider: str, commit: bool, u
             # For explicit -c/-u flags, skip confirmation (user intent is clear)
             should_commit = True
             if not (commit or upstream):
-                should_commit = click.confirm("Create a commit with this message?", default=True)
+                should_commit = click.confirm("Create a commit with this message?")
 
             if should_commit:
                 # Allow user to modify the commit message
-                if click.confirm("Add personal note to the commit message? default is N - no addition to previous message", default=False):
+                if click.confirm("Add personal note? default is N - no addition to previous commitmessage", default=False):
                     human_message = click.prompt("Enter your commit message", default=original_message, show_default=False)
                     commit_message = human_message + '\n' + commit_message
                     # Display the final commit message
@@ -179,7 +179,7 @@ def generate(staged: bool, all: bool, model: str, provider: str, commit: bool, u
                     # If upstream flag is used, also ask about pushing
                     if upstream:
                         # For explicit -u flag, user already wants to push, so just confirm branch
-                        if click.confirm(f"Push to upstream branch '{upstream}'?", default=True):
+                        if click.confirm(f"Push to upstream branch '{upstream}'?"):
                             try:
                                 subprocess.run(["git", "push", "-u", "origin", upstream], check=True)
                                 click.echo(click.style(f"✓ Successfully pushed to upstream branch '{upstream}'!", fg="green", bold=True))
@@ -215,7 +215,7 @@ def show(limit: int, all_repos: bool, clear: bool):
     repo_path = os.getcwd() if not all_repos else None
     
     if clear:
-        if click.confirm(f"Clear {'all' if all_repos else 'current repository'} message history?", default=True):
+        if click.confirm(f"Clear {'all' if all_repos else 'current repository'} message history?"):
             storage.clear_messages(repo_path)
             click.echo(click.style("🗑️  Message history cleared.", fg="green"))
         return

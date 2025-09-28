@@ -200,7 +200,6 @@ gitme show --clear
   - Anthropic API key for Claude models
   - OpenAI API key for GPT models, `openai` Python package for OpenAI support
 
-
 ## New Release
 
 ```bash
