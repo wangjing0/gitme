@@ -15,32 +15,41 @@ from . import __version__
 @click.option('--version', '-v', is_flag=True, help='Show version and exit')
 @click.pass_context
 def cli(ctx, version):
-    """GitMe - Git commit message generator
-    
-    Generate intelligent git commit messages by analyzing your code changes.
-    
-    Commands:
-        gitme [OPTIONS]         Generate commit message
-        gitme show [OPTIONS]    Show previous commit messages
+    """GitMe - Git actions simplified for vibe coders
+
+    USAGE:
+        gitme [OPTIONS]         Generate commit message for current changes
+        gitme show [OPTIONS]    Display commit message history
         gitme -v                Show version information
-    
-    Generate Examples:
-        gitme              # Generate message for staged changes
-        gitme -a           # Generate message for all changes  
-        gitme -c           # Generate message and commit all changes     
-        gitme -p openai    # Use OpenAI instead of default Anthropic
-        gitme -p openai -m gpt-4o-mini  # Use OpenAI's GPT-4o-mini model
-        gitme -u <branch>  # Stealth mode: Generate, commit and push to upstream branch
-        
-    Show Examples:
-        gitme show         # Show last 10 messages with provider info
-        gitme show -n 5    # Show last 5 messages
-        gitme show -r      # Show from all repositories  
-        gitme show --clear # Clear message history
-    
-    Environment:
-        ANTHROPIC_API_KEY must be set for Claude API access
-        OPENAI_API_KEY must be set for OpenAI API access
+
+    EXAMPLES:
+        Basic Usage:
+        gitme                   # Generate message for staged changes
+        gitme -a                # Generate message for all changes (staged + unstaged)
+        gitme -c                # Generate message and auto-commit all changes
+
+        AI Provider Options:
+        gitme -p openai         # Use OpenAI (GPT-4o-mini) instead of Claude
+        gitme -p anthropic      # Use Claude (default)
+        gitme -m claude-3-5-haiku-latest  # Specify Claude model
+
+        Workflow Integration:
+        gitme -c                # Generate and commit changes
+        gitme -u main           # Generate, commit, and push to branch 'main'
+        gitme -c -u main        # Combine commit and push operations
+
+        History Management:
+        gitme show              # Show last 10 commit messages
+        gitme show -n 5         # Show last 5 messages
+        gitme show -r           # Show messages from all repositories
+        gitme show --clear      # Clear message history
+
+    REQUIREMENTS:
+        Set environment variables for AI providers:
+        • ANTHROPIC_API_KEY for Claude (recommended)
+        • OPENAI_API_KEY for OpenAI/GPT models
+
+    TIP: Use 'gitme -c -u <branch>' for streamlined commit-and-push workflow
     """
     if version:
         click.echo(f"gitme version {__version__}")
@@ -103,7 +112,7 @@ def generate(staged: bool, all: bool, model: str, provider: str, commit: bool, u
         for file in untracked_files:
             click.echo(f"    {file}")
         
-        if click.confirm("Do you want to add these untracked files to the staging area?"):
+        if click.confirm("Add these untracked files to staging area?", default=True):
             import subprocess
             try:
                 subprocess.run(["git", "add"] + untracked_files, check=True)
@@ -144,10 +153,14 @@ def generate(staged: bool, all: bool, model: str, provider: str, commit: bool, u
         click.echo(click.style(commit_message, fg="cyan"))
         
         if commit or upstream:
-            # Ask for confirmation before committing
-            if click.confirm("Do you want to create a commit with this message?"):
+            # For explicit -c/-u flags, skip confirmation (user intent is clear)
+            should_commit = True
+            if not (commit or upstream):
+                should_commit = click.confirm("Create a commit with this message?", default=True)
+
+            if should_commit:
                 # Allow user to modify the commit message
-                if click.confirm("Do you want to modify the commit message? default is N - no modification", default=False):
+                if click.confirm("Add personal note to the commit message? default is N - no addition to previous message", default=False):
                     human_message = click.prompt("Enter your commit message", default=original_message, show_default=False)
                     commit_message = human_message + '\n' + commit_message
                     # Display the final commit message
@@ -165,7 +178,8 @@ def generate(staged: bool, all: bool, model: str, provider: str, commit: bool, u
                     
                     # If upstream flag is used, also ask about pushing
                     if upstream:
-                        if click.confirm(f"Do you want to push to upstream branch '{upstream}'?"):
+                        # For explicit -u flag, user already wants to push, so just confirm branch
+                        if click.confirm(f"Push to upstream branch '{upstream}'?", default=True):
                             try:
                                 subprocess.run(["git", "push", "-u", "origin", upstream], check=True)
                                 click.echo(click.style(f"✓ Successfully pushed to upstream branch '{upstream}'!", fg="green", bold=True))
@@ -201,7 +215,7 @@ def show(limit: int, all_repos: bool, clear: bool):
     repo_path = os.getcwd() if not all_repos else None
     
     if clear:
-        if click.confirm(f"Are you sure you want to clear {'all' if all_repos else 'this repository'} message history?"):
+        if click.confirm(f"Clear {'all' if all_repos else 'current repository'} message history?", default=True):
             storage.clear_messages(repo_path)
             click.echo(click.style("🗑️  Message history cleared.", fg="green"))
         return

@@ -1,7 +1,7 @@
 
 <div align="center">
 
-## A git commit message generator that doesn't interrupt your coding flow.
+## Generate git actions without interrupting your coding flow.
 
 ```bash
 git add . && git commit -am "ugh... I vide all the way, what did I do? what do I even say here?" && git push -u origin dev
@@ -214,7 +214,7 @@ twine upload dist/*
 ## Roadmap
 
 - [x] User feedback on the generated message and modify accordingly
-- [ ] Add a way to add custom prompt to the AI provider
+- [x] Add a way to add custom prompt to the AI provider
 - [ ] Local models with Ollama support
 
 ## Contributing
