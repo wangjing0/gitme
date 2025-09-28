@@ -160,7 +160,7 @@ def generate(staged: bool, all: bool, model: str, provider: str, commit: bool, u
 
             if should_commit:
                 # Allow user to modify the commit message
-                if click.confirm("Add personal note? default is N - no addition to previous commitmessage", default=False):
+                if click.confirm("Add a personal note to this commit? default is N - no addition to the message", default=False):
                     human_message = click.prompt("Enter your commit message", default=original_message, show_default=False)
                     commit_message = human_message + '\n' + commit_message
                     # Display the final commit message
