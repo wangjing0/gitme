@@ -140,7 +140,7 @@ gitme show --clear
     - Modified auth.py
     - Updated config.json
     - Added login.html
-    🤖 AI Provider: Anthropic (claude-3-5-haiku-latest)
+    🤖 AI Provider: Anthropic (claude-sonnet-4-5)
     📝 Files changed: 3
 
 [2] 2025-07-20 09:15:22
@@ -172,8 +172,8 @@ gitme show --clear
 ### Available Models
 
 **Anthropic Claude:**
-- `claude-3-5-haiku-latest` (default)
-- `claude-3-haiku-20240307`
+- `claude-sonnet-4-5` (default)
+- `claude-3-5-haiku-latest`
 - `claude-3-sonnet-20240229`
 
 **OpenAI GPT:**
@@ -214,6 +214,7 @@ twine upload dist/*
 
 - [x] User feedback on the generated message and modify accordingly
 - [x] Add a way to add custom prompt to the AI provider
+- [ ] add features: rewind to a previous commit, redo the commit message, etc.
 - [ ] Local models with Ollama support
 
 ## Contributing
