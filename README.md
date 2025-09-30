@@ -21,6 +21,14 @@ gitme show
 
 ![gitme-cli-show](https://github.com/wangjing0/gitme/raw/main/images/gitmeshow.png)
 
+## Prerequisites
+
+- Python 3.8+
+- At least one AI provider API key:
+  - Anthropic API key for Claude models, default is `claude-sonnet-4-5`
+  - OpenAI API key for GPT models, `openai` Python package for OpenAI support, default is `gpt-4o-mini`
+- Git, all gitme commands must be run from within a git repository directory. If you're not in a git repository, you'll see an error message prompting you to initialize a git repository with `git init`.
+
 ## Features
 
 - Analyzes git diffs to generate contextually relevant commit messages
@@ -38,7 +46,7 @@ gitme show
 Install from PyPI:
 
 ```bash
-pip install gitme-cli
+pip install gitme-cli --upgrade
 ```
 
 Or install directly from GitHub:
@@ -68,8 +76,6 @@ export ANTHROPIC_API_KEY="your-anthropic-api-key-here"
 ```bash
 export OPENAI_API_KEY="your-openai-api-key-here"
 ```
-
-**Note:** All `gitme` commands must be run from within a git repository directory. If you're not in a git repository, you'll see an error message prompting you to run `git init`.
 
 ### Basic Usage
 
@@ -133,23 +139,24 @@ gitme show --clear
 
 **Enhanced Message History Display:**
 ```
-[1] 2025-07-20 10:30:45
+[1] 2025-09-30 07:48:32
     💬 Message:
-    Add user authentication feature
+    Update default AI model to Claude Sonnet 4
     
-    - Modified auth.py
-    - Updated config.json
-    - Added login.html
+    - Modified README.md
     🤖 AI Provider: Anthropic (claude-sonnet-4-5)
-    📝 Files changed: 3
-
-[2] 2025-07-20 09:15:22
-    💬 Message:
-    Fix authentication bug
-    
-    - Fixed login validation
-    🤖 AI Provider: Openai (gpt-4o-mini)
     📝 Files changed: 1
+
+[2] 2025-09-30 07:45:54
+    💬 Message:
+    Update documentation images and references
+    
+    - Modified README.md
+    - Added images/gitmecommit.png
+    - Added images/gitmeshow.png
+    - Cleaned up src/gitme/cli.py
+    🤖 AI Provider: Anthropic (claude-sonnet-4-5)
+    📝 Files changed: 4
 ```
 
 ## Options
