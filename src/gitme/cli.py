@@ -10,7 +10,6 @@ from .config import Config
 from .storage import MessageStorage
 from . import __version__
 
-
 @click.group(invoke_without_command=True)
 @click.option('--version', '-v', is_flag=True, help='Show version and exit')
 @click.pass_context
