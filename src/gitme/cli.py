@@ -31,7 +31,7 @@ def cli(ctx, version):
         AI Provider Options:
         gitme -p openai         # Use OpenAI (GPT-4o-mini) instead of Claude
         gitme -p anthropic      # Use Claude (default)
-        gitme -m claude-3-5-haiku-latest  # Specify Claude model
+        gitme -m claude-sonnet-4-5  # Specify Claude model here
 
         Workflow Integration:
         gitme -c                # Generate and commit changes
@@ -64,7 +64,7 @@ def cli(ctx, version):
 @cli.command()
 @click.option('--staged', '-s', is_flag=True, help='Analyze only staged changes')
 @click.option('--all', '-a', is_flag=True, help='Analyze all changes (staged and unstaged)')
-@click.option('--model', '-m', default='claude-3-5-haiku-latest', help='Model to use (Claude or OpenAI)')
+@click.option('--model', '-m', default='claude-sonnet-4-5', help='Model to use (Claude or OpenAI)')
 @click.option('--provider', '-p', type=click.Choice(['anthropic', 'openai']), default='anthropic', help='LLM provider to use (default: anthropic)')
 @click.option('--commit', '-c', is_flag=True, help='Create commit with generated message')
 @click.option('--upstream', '-u', help='Create commit and push to upstream branch (specify branch name)')

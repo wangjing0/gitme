@@ -21,7 +21,7 @@ class Config:
     
     def _default_config(self) -> Dict[str, Any]:
         return {
-            "model": "claude-3-5-haiku-latest",
+            "model": "claude-sonnet-4-5",
             "max_tokens": 300,
             "temperature": 0.3,
             "staged_only": True
