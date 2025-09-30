@@ -185,14 +185,6 @@ gitme show --clear
 - Be aware that different providers have different data handling policies
 - Both Anthropic and OpenAI have their own privacy policies and data retention practices
 
-## Requirements
-
-- Python 3.8+
-- Git
-- At least one AI provider API key:
-  - Anthropic API key for Claude models
-  - OpenAI API key for GPT models, `openai` Python package for OpenAI support
-
 ## New Release
 
 ```bash
