@@ -107,21 +107,7 @@ gitme -m claude-3-5-haiku-latest
 gitme -p openai -c  # Use OpenAI and commit
 ```
 
-### Untracked Files Handling
-
-When you run `gitme`, it will automatically detect any untracked files in your repository and prompt you to add them to the staging area:
-
-```bash
-📁 Untracked files found:
-    new_feature.py
-    test_file.js
- Do you want to add these untracked files to the staging area? [y/N]:
-```
-
-- Choose **y** to add all untracked files to staging and include them in the commit message generation
-- Choose **N** to proceed without the untracked files (they won't be included in the analysis)
-
-### Message History
+### Message history and modified files
 
 ```bash
 # Show previous messages (includes provider/model info)
@@ -221,7 +207,7 @@ twine upload dist/*
 
 - [x] User feedback on the generated message and modify accordingly
 - [x] Add a way to add custom prompt to the AI provider
-- [ ] add features: rewind to a previous commit, redo the commit message, etc.
+- [ ] add features: search messages and return commit_id, rewind to a previous commit, redo the commit message, etc.
 - [ ] Local models with Ollama support
 
 ## Contributing
