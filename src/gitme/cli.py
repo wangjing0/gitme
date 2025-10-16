@@ -16,39 +16,46 @@ from . import __version__
 def cli(ctx, version):
     """GitMe - Git actions simplified for vibe coders
 
-USAGE:
-    gitme [OPTIONS]         Generate commit message for current changes
-    gitme show [OPTIONS]    Display commit message history
-    gitme -v                Show version information
+    \b
+    USAGE:
+      gitme [OPTIONS]         Generate commit message
+      gitme show [OPTIONS]    Display message history
+      gitme -v                Show version information
 
-EXAMPLES:
-    Basic Usage:
-    gitme                   # Generate message for staged changes
-    gitme -a                # Generate message for all changes (staged + unstaged)
-    gitme -c                # Generate message and auto-commit all changes
+    \b
+    EXAMPLES:
+      Basic Usage:
+        gitme                 # Generate message for staged changes
+        gitme -a              # Generate for all changes
+        gitme -c              # Generate and auto-commit
 
-    AI Provider Options:
-    gitme -p openai         # Use OpenAI (GPT-4o-mini) instead of Claude
-    gitme -p anthropic      # Use Claude (default)
-    gitme -m claude-haiku-4-5  # Specify Claude model here
+    \b
+      AI Provider Options:
+        gitme -p openai       # Use OpenAI (GPT-4o-mini)
+        gitme -p anthropic    # Use Claude (default)
+        gitme -m claude-sonnet-4-5  # Specify model
 
-    Workflow Integration:
-    gitme -c                # Generate and commit changes
-    gitme -u main           # Generate, commit, and push to branch 'main'
-    gitme -c -u main        # Combine commit and push operations
+    \b
+      Workflow Integration:
+        gitme -c              # Generate and commit
+        gitme -u main         # Generate, commit, push to 'main'
+        gitme -c -u main      # Combine commit and push
 
-    History Management:
-    gitme show              # Show last 10 commit messages
-    gitme show -n 5         # Show last 5 messages
-    gitme show -r           # Show messages from all repositories
-    gitme show --clear      # Clear message history
+    \b
+      History Management:
+        gitme show            # Show last 10 messages
+        gitme show -n 5       # Show last 5 messages
+        gitme show -r         # Show all repositories
+        gitme show --clear    # Clear history
 
-REQUIREMENTS:
-    Set environment variables for AI providers:
-    • ANTHROPIC_API_KEY for Claude (recommended)
-    • OPENAI_API_KEY for OpenAI/GPT models
+    \b
+    REQUIREMENTS:
+      Set environment variables:
+        • ANTHROPIC_API_KEY for Claude (recommended)
+        • OPENAI_API_KEY for OpenAI/GPT models
 
-TIP: Use 'gitme -c -u <branch>' for streamlined commit-and-push workflow
+    \b
+    TIP: Use 'gitme -c -u <branch>' for commit-and-push workflow
     """
     if version:
         click.echo(f"gitme version {__version__}")
