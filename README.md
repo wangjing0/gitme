@@ -25,7 +25,7 @@ gitme show
 
 - Python 3.8+
 - At least one AI provider API key:
-  - Anthropic API key for Claude models, default is `claude-sonnet-4-5`
+  - Anthropic API key for Claude models, default is `claude-haiku-4-5`
   - OpenAI API key for GPT models, `openai` Python package for OpenAI support, default is `gpt-4o-mini`
 - Git, all gitme commands must be run from within a git repository directory. If you're not in a git repository, you'll see an error message prompting you to initialize a git repository with `git init`.
 
@@ -165,9 +165,9 @@ gitme show --clear
 ### Available Models
 
 **Anthropic Claude:**
-- `claude-sonnet-4-5` (default)
+- `claude-haiku-4-5` (default)
+- `claude-sonnet-4-5`
 - `claude-3-5-haiku-latest`
-- `claude-3-sonnet-20240229`
 
 **OpenAI GPT:**
 - `gpt-4o-mini` (default when using OpenAI)

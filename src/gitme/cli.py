@@ -16,39 +16,39 @@ from . import __version__
 def cli(ctx, version):
     """GitMe - Git actions simplified for vibe coders
 
-    USAGE:
-        gitme [OPTIONS]         Generate commit message for current changes
-        gitme show [OPTIONS]    Display commit message history
-        gitme -v                Show version information
+USAGE:
+    gitme [OPTIONS]         Generate commit message for current changes
+    gitme show [OPTIONS]    Display commit message history
+    gitme -v                Show version information
 
-    EXAMPLES:
-        Basic Usage:
-        gitme                   # Generate message for staged changes
-        gitme -a                # Generate message for all changes (staged + unstaged)
-        gitme -c                # Generate message and auto-commit all changes
+EXAMPLES:
+    Basic Usage:
+    gitme                   # Generate message for staged changes
+    gitme -a                # Generate message for all changes (staged + unstaged)
+    gitme -c                # Generate message and auto-commit all changes
 
-        AI Provider Options:
-        gitme -p openai         # Use OpenAI (GPT-4o-mini) instead of Claude
-        gitme -p anthropic      # Use Claude (default)
-        gitme -m claude-sonnet-4-5  # Specify Claude model here
+    AI Provider Options:
+    gitme -p openai         # Use OpenAI (GPT-4o-mini) instead of Claude
+    gitme -p anthropic      # Use Claude (default)
+    gitme -m claude-haiku-4-5  # Specify Claude model here
 
-        Workflow Integration:
-        gitme -c                # Generate and commit changes
-        gitme -u main           # Generate, commit, and push to branch 'main'
-        gitme -c -u main        # Combine commit and push operations
+    Workflow Integration:
+    gitme -c                # Generate and commit changes
+    gitme -u main           # Generate, commit, and push to branch 'main'
+    gitme -c -u main        # Combine commit and push operations
 
-        History Management:
-        gitme show              # Show last 10 commit messages
-        gitme show -n 5         # Show last 5 messages
-        gitme show -r           # Show messages from all repositories
-        gitme show --clear      # Clear message history
+    History Management:
+    gitme show              # Show last 10 commit messages
+    gitme show -n 5         # Show last 5 messages
+    gitme show -r           # Show messages from all repositories
+    gitme show --clear      # Clear message history
 
-    REQUIREMENTS:
-        Set environment variables for AI providers:
-        • ANTHROPIC_API_KEY for Claude (recommended)
-        • OPENAI_API_KEY for OpenAI/GPT models
+REQUIREMENTS:
+    Set environment variables for AI providers:
+    • ANTHROPIC_API_KEY for Claude (recommended)
+    • OPENAI_API_KEY for OpenAI/GPT models
 
-    TIP: Use 'gitme -c -u <branch>' for streamlined commit-and-push workflow
+TIP: Use 'gitme -c -u <branch>' for streamlined commit-and-push workflow
     """
     if version:
         click.echo(f"gitme version {__version__}")
@@ -63,7 +63,7 @@ def cli(ctx, version):
 @cli.command()
 @click.option('--staged', '-s', is_flag=True, help='Analyze only staged changes')
 @click.option('--all', '-a', is_flag=True, help='Analyze all changes (staged and unstaged)')
-@click.option('--model', '-m', default='claude-sonnet-4-5', help='Model to use (Claude or OpenAI)')
+@click.option('--model', '-m', default='claude-haiku-4-5', help='Model to use (Claude or OpenAI)')
 @click.option('--provider', '-p', type=click.Choice(['anthropic', 'openai']), default='anthropic', help='LLM provider to use (default: anthropic)')
 @click.option('--commit', '-c', is_flag=True, help='Create commit with generated message')
 @click.option('--upstream', '-u', help='Create commit and push to upstream branch (specify branch name)')
